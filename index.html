@@ -1,0 +1,4649 @@
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Special+Elite&display=swap" rel="stylesheet"/>
+<style>
+
+    :root {
+      --black: #0a0a0a;
+      --deep: #111111;
+      --charcoal: #1c1c1c;
+      --ash: #2e2e2e;
+      --rust: #EB203D;
+      --ember: #ff3d57;
+      --gold: #E48C22;
+      --bone: #c8bfb0;
+      --fog: #9a9088;
+      --white: #eee8df;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--bone);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.125rem;
+      font-weight: 300;
+      letter-spacing: 0.03em;
+      overflow-x: hidden;
+      cursor: default;
+      transition: background-color 1s ease;
+    }
+
+    /* Grain overlay — disabled */
+    body::before {
+      display: none;
+    }
+
+    /* ─── NAV ─────────────────────────────────────────── */
+    .nav-menu-platforms { display: none; }
+    .nav-close { display: none; }
+    .nav-menu a { font-size: 1rem; }
+    /* ─── ANNOUNCEMENT BAR ──────────────────────────────── */
+    .announcement-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 110;
+      background: rgba(10,10,10,0.6);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      box-shadow:
+        0 2px 12px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.06),
+        inset 0 -1px 0 rgba(235,32,61,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.55rem 2.5rem;
+      min-height: 36px;
+    }
+
+    .announcement-bar-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bone);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .announcement-bar-link:hover {
+      color: var(--white);
+    }
+
+    .announcement-bar-link svg {
+      transition: transform 0.2s;
+    }
+
+    .announcement-bar-link:hover svg {
+      transform: translateX(3px);
+    }
+
+    .announcement-bar-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--rust);
+      flex-shrink: 0;
+      animation: pulse-badge-soft 3s ease-in-out infinite;
+    }
+
+    .announcement-bar-close {
+      position: absolute;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--fog);
+      cursor: pointer;
+      padding: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    .announcement-bar-close:hover {
+      color: var(--white);
+    }
+
+    nav {
+      position: fixed;
+      top: 36px; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 2rem;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.98), transparent);
+      border-bottom: 1px solid rgba(235,32,61,0.15);
+    }
+
+    .nav-inner {
+      max-width: 1460px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.2em;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--rust); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--fog);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+
+    nav a:hover { color: var(--white); }
+    nav a:hover::after { width: 100%; }
+
+    /* ─── NAV PLATFORM BUTTONS (global) ────────────────── */
+    .nav-links-group {
+      display: contents;
+    }
+    .nav-menu.open::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("images/nav-menu-grain-texture.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: overlay;
+    }
+    .nav-menu.open::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.85) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .nav-menu > * { position: relative; z-index: 2; }
+    .nav-platform-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      text-decoration: none;
+      border: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Glass sheen overlay */
+    .nav-platform-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Inner highlight ring */
+    .nav-platform-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.25);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .nav-platform-btn svg { position: relative; z-index: 3; }
+    .nav-platform-btn:hover { transform: translateY(-2px); border: none; }
+    .nav-platform-btn.spotify  { background: #1DB954; color: #000; box-shadow: 0 4px 12px rgba(29,185,84,0.35); }
+    .nav-platform-btn.spotify:hover  { box-shadow: 0 6px 16px rgba(29,185,84,0.5); }
+    .nav-platform-btn.apple    { background: #fc3c44; color: #fff; box-shadow: 0 4px 12px rgba(252,60,68,0.35); }
+    .nav-platform-btn.apple:hover    { box-shadow: 0 6px 16px rgba(252,60,68,0.5); }
+    .nav-platform-btn.tiktok   { background: #69C9D0; color: #000; box-shadow: 0 4px 12px rgba(105,201,208,0.35); }
+    .nav-platform-btn.tiktok:hover   { box-shadow: 0 6px 16px rgba(105,201,208,0.5); }
+    .nav-platform-btn.youtube-music  { background: #FF0000; color: #fff; box-shadow: 0 4px 12px rgba(255,0,0,0.35); }
+    .nav-platform-btn.youtube-music:hover  { box-shadow: 0 6px 16px rgba(255,0,0,0.5); }
+
+    /* ─── HERO ────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 2rem;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.75) 35%, rgba(10,10,10,0.0) 55%, rgba(10,10,10,0.0) 75%, rgba(10,10,10,0.55) 100%),
+        linear-gradient(to top, rgba(10,10,10,0.75) 0%, transparent 45%),
+        url('images/hero-jaden.jpg') 66% 20%/cover no-repeat;
+      will-change: transform;
+      transform-origin: center center;
+    }
+
+
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 11vw, 10rem);
+      line-height: 0.88;
+      color: var(--white);
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.4s forwards;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.6), 0 0 60px rgba(0,0,0,0.3);
+    }
+
+    .hero-title .offset {
+      display: block;
+      margin-left: clamp(1rem, 5vw, 6rem);
+      color: transparent;
+      -webkit-text-stroke: 4px rgba(200,191,176,0.4);
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--bone);
+      letter-spacing: 0.12em;
+      max-width: 480px;
+      line-height: 1.6;
+      margin-bottom: 0;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.6s forwards;
+    }
+
+    .hero-cta {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.8s forwards;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 1rem 2.8rem;
+      background: #C41833;
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.0625rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(196,24,51,0.4), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.2);
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+    }
+
+    .btn-primary:hover { background: var(--rust); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(235,32,61,0.5), inset 0 1px 0 rgba(255,255,255,0.2); }
+
+    .btn-ghost {
+      display: inline-block;
+      padding: 1rem 2.8rem;
+      background: rgba(255,255,255,0.05);
+      color: var(--bone);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.0625rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(200,191,176,0.3);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s, box-shadow 0.2s, background 0.2s;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.1);
+    }
+
+    .btn-ghost::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+    }
+
+    .btn-ghost:hover { border-color: var(--bone); color: var(--white); transform: translateY(-2px); background: rgba(255,255,255,0.1); box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem; right: 3rem;
+      writing-mode: vertical-rl;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--fog);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      opacity: 0;
+      animation: fadeIn 1s 1.2s forwards;
+      z-index: 10;
+    }
+
+    .hero-scroll::before {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 50px;
+      background: var(--rust);
+      animation: growLine 1s 1.4s forwards;
+      transform-origin: top;
+      transform: scaleY(0);
+    }
+
+
+    .nav-close {
+      display: none;
+    }
+    section {
+      padding: 7rem 2rem;
+      position: relative;
+    }
+
+    .section-inner {
+      max-width: 1460px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 30px; height: 1px;
+      background: var(--gold);
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 3rem;
+    }
+
+    .section-title + .section-sub {
+      margin-top: -2rem;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--fog);
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    /* ─── ABOUT ────────────────────────────────────────── */
+    #about {
+      background: var(--deep);
+      border-top: 1px solid var(--ash);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      }
+
+    .about-img-wrap {
+      position: relative;
+    }
+
+    .about-img-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: linear-gradient(135deg, var(--charcoal) 0%, var(--ash) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-img-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 70%, rgba(235,32,61,0.25) 0%, transparent 60%),
+        repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.015) 10px, rgba(255,255,255,0.015) 11px);
+    }
+
+    .about-img-placeholder::after {
+      content: 'PHOTO';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.4em;
+      color: rgba(200,191,176,0.15);
+    }
+
+    .about-img-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: -15px; right: -15px;
+      width: 100%; height: 100%;
+      border: 1px solid var(--rust);
+      z-index: -1;
+      opacity: 0.4;
+    }
+
+    .about-text p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--bone);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-text p + p { color: var(--fog); font-size: 1.0625rem; }
+
+    .about-booking-text {
+      color: var(--bone) !important;
+      font-size: 1.05rem !important;
+    }
+
+    .about-text {
+      padding-bottom: 1.5rem;
+    }
+
+    .about-text .btn-primary {
+      padding: 1rem 6rem;
+      margin-top: 1.5rem;
+    }
+
+    .about-quote {
+      font-family: 'Special Elite', cursive;
+      font-size: 1.1rem;
+      color: var(--bone);
+      border-left: 2px solid var(--rust);
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    /* ─── MUSIC ────────────────────────────────────────── */
+    #music {
+      background: var(--black);
+      border-top: 1px solid var(--ash);
+      padding-bottom: 4rem;
+    }
+
+    .music-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .album-card {
+      position: relative;
+      cursor: pointer;
+      group: true;
+      overflow: hidden;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .album-card:hover {
+      transform: scale(1.02);
+    }
+
+    .album-card:has(.album-art.flipped) {
+      transform: none !important;
+      transition: none;
+    }
+
+    .album-art-inner {
+      width: 100%; height: 100%;
+    }
+
+    .album-card:hover .album-art-inner { transform: scale(1.0); }
+
+    .album-art-inner.a1 {
+      background: linear-gradient(135deg, #1a0a05 0%, #3d1208 50%, #1a0a05 100%);
+    }
+    .album-art-inner.a2 {
+      background: linear-gradient(135deg, #0d0d0d 0%, #1e1e1e 50%, #0a0a0a 100%);
+    }
+
+    .album-art-inner.a4 {
+      background: linear-gradient(135deg, #1a0a0a 0%, #2d1010 40%, #3d0e0e 100%);
+    }
+    .album-art-inner.a3 {
+      background: linear-gradient(135deg, #0f0b08 0%, #2a1a0e 60%, #0f0b08 100%);
+    }
+
+
+
+    .album-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      isolation: isolate;
+      pointer-events: none;
+    }
+
+    .album-card:hover .album-overlay { opacity: 1; }
+
+    /* Touch devices — always show overlay and play button at lower opacity */
+    @media (hover: none) {
+      .album-overlay {
+        opacity: 1;
+        background: rgba(0,0,0,0.08);
+      }
+      .play-btn {
+        opacity: 0.35;
+        background: rgba(200,200,210,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      }
+      .album-card:active .play-btn {
+        opacity: 1;
+        transform: scale(1.08);
+        background: rgba(255,255,255,0.26);
+        box-shadow:
+          0 12px 40px rgba(0,0,0,0.45),
+          inset 0 1.5px 0 rgba(255,255,255,0.7),
+          inset 0 -1.5px 0 rgba(0,0,0,0.2),
+          inset 2px 0 0 rgba(255,255,255,0.3),
+          inset -2px 0 0 rgba(0,0,0,0.1);
+      }
+      .album-card:active .album-overlay {
+        background: rgba(0,0,0,0.15);
+      }
+    }
+
+    .play-btn {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.95) !important;
+      padding-left: 3px;
+      text-decoration: none !important;
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+      position: relative;
+      isolation: isolate;
+      cursor: pointer;
+      pointer-events: none;
+
+      /* Simulated glass — no backdrop-filter to avoid compositing lag */
+      background: rgba(200, 200, 210, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.45),
+        inset 0 2px 0 rgba(255, 255, 255, 0.7),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.2),
+        inset 2px 0 0 rgba(255, 255, 255, 0.3),
+        inset -2px 0 0 rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    /* No backdrop-filter — avoids compositing blur on parent */
+
+    .play-btn:visited,
+    .play-btn:focus,
+    .play-btn:active {
+      color: rgba(255, 255, 255, 0.95) !important;
+      background-color: transparent;
+      outline: none !important;
+      box-shadow: none;
+    }
+
+    .play-btn:hover {
+      transform: scale(1.08);
+      background: rgba(255, 255, 255, 0.26);
+      box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.45),
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.7),
+        inset 0 -1.5px 0 rgba(0, 0, 0, 0.2),
+        inset 1.5px 0 0 rgba(255, 255, 255, 0.25),
+        inset -1.5px 0 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .album-info {
+      padding: 1rem 0 0.5rem;
+      border-top: 1px solid var(--ash);
+    }
+
+    .album-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      color: var(--white);
+      letter-spacing: 0.05em;
+    }
+
+    .album-meta {
+      font-size: 0.75rem;
+      color: var(--fog);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    /* ─── TOUR ─────────────────────────────────────────── */
+    #tour {
+      background: var(--deep);
+      border-top: 1px solid var(--ash);
+      padding-top: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #tour .tour-bg {
+      position: absolute;
+      inset: -25%;
+      background-image: url('images/tour-background.jpg');
+      background-size: cover;
+      background-position: center 8%;
+      opacity: 0.22;
+      z-index: 0;
+      will-change: transform;
+    }
+
+    #tour .tour-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.2) 40%, rgba(10,10,10,0.7) 100%);
+    }
+
+    #tour .section-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .tour-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      }
+
+    .tour-item {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 2rem;
+      padding: 1.5rem 2rem;
+      border-bottom: none;
+      transition: background 0.2s, box-shadow 0.2s;
+      position: relative;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      overflow: visible;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
+    }
+
+    .tour-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 50%, rgba(235,32,61,0.04) 100%);
+      border-radius: 12px;
+      opacity: 1;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+
+    .tour-item:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); }
+    .tour-item:hover::before { opacity: 1; }
+
+    .tour-item .tour-date { flex: 0 0 100px; }
+    .tour-item > div:nth-child(2) { flex: 1 1 auto; min-width: 0; }
+    .tour-item .tour-ticket, .tour-item .atc-wrap { flex: 0 0 auto; }
+
+    .tour-date {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .tour-date span {
+      display: block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--fog);
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    .tour-venue {
+      font-size: 1.05rem;
+      color: var(--white);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
+
+    .tour-city {
+      font-size: 0.72rem;
+      color: var(--fog);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+      line-height: 1.5;
+    }
+
+    .tour-ticket {
+      display: inline-block;
+      padding: 0.55rem 1.4rem;
+      border: 1px solid var(--rust);
+      color: #FF4060;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+      border-radius: 4px;
+    }
+
+    .tour-ticket:hover {
+      background: var(--rust);
+      color: var(--white);
+    }
+
+    .tour-item--tiktok {
+      border-color: rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .tour-item--tiktok::before {
+      background: linear-gradient(90deg, rgba(235,32,61,0.03) 0%, transparent 100%);
+    }
+
+    .tour-city--tiktok {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--fog);
+    }
+
+    .tour-ticket--tiktok {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border-color: rgba(255,255,255,0.2);
+      color: var(--bone);
+    }
+
+    .tour-ticket--tiktok:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.35);
+      color: var(--white);
+    }
+
+    .tour-ticket--live {
+      border-color: rgba(235,32,61,0.6) !important;
+      color: #FF4060 !important;
+      animation: live-glow 2.5s ease-in-out infinite;
+    }
+
+    .tour-ticket--live:hover {
+      background: var(--rust) !important;
+      color: var(--white) !important;
+    }
+
+    @keyframes live-glow {
+      0%, 100% { box-shadow: 0 0 6px rgba(235,32,61,0.2); }
+      50%       { box-shadow: 0 0 14px rgba(235,32,61,0.5), 0 0 4px rgba(235,32,61,0.3); }
+    }
+
+    .tour-item .tour-actions {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0.75rem;
+      align-items: center;
+      flex: 0 0 auto;
+    }
+
+    /* ─── ADD TO CALENDAR ───────────────────────────────── */
+    .atc-wrap {
+      position: relative;
+    }
+
+    .atc-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1.1rem;
+      border: 1px solid rgba(200,191,176,0.25);
+      color: var(--fog);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.04);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .atc-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 60%);
+      pointer-events: none;
+    }
+
+    .atc-btn:hover { border-color: var(--bone); color: var(--white); background: rgba(255,255,255,0.08); box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 2px 8px rgba(0,0,0,0.3); }
+
+    .atc-btn svg { width: 11px; height: 11px; flex-shrink: 0; }
+
+    .atc-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      bottom: calc(100% + 0.4rem);
+      top: auto;
+      background: #1a1a1a;
+      border: 1px solid rgba(200,191,176,0.15);
+      border-radius: 8px;
+      min-width: 170px;
+      z-index: 100;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .atc-wrap.open .atc-dropdown { display: flex; }
+
+    .atc-dropdown a {
+      padding: 0.65rem 1rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--fog);
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+
+    .atc-dropdown a:hover { background: rgba(235,32,61,0.15); color: var(--white); }
+
+    /* ─── CONTACT ──────────────────────────────────────── */
+    #contact {
+      background: var(--black);
+      border-top: 1px solid var(--ash);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 2rem 2.5rem;
+      position: relative;
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .contact-grid::before {
+      display: none;
+    }
+
+    .contact-info h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      color: var(--white);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      margin-top: 2rem;
+    }
+
+    .contact-info h3:first-child { margin-top: 0; }
+
+    .contact-info p, .contact-info a {
+      font-size: 1rem;
+      color: var(--fog);
+      text-decoration: none;
+      line-height: 1.7;
+      transition: color 0.2s;
+    }
+
+    .contact-info a:hover { color: var(--rust); }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-width: 0;
+    }
+
+    .contact-info {
+      min-width: 0;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fog);
+    }
+
+    input, textarea, select {
+      background: var(--charcoal);
+      border: 1px solid var(--ash);
+      color: var(--white);
+      padding: 0.85rem 1rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.0625rem;
+      letter-spacing: 0.05em;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+      appearance: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--rust);
+    }
+
+    textarea { min-height: 120px; }
+
+    /* ─── FEATURED VIDEO ────────────────────────────────── */
+    .featured-video {
+      margin: 3rem 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .featured-video-label {
+      width: 100%;
+      max-width: 860px;
+      margin-bottom: 1rem;
+    }
+
+    .featured-video-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      color: var(--fog);
+      text-transform: uppercase;
+    }
+
+    .featured-video-embed {
+      position: relative;
+      width: 100%;
+      max-width: 860px;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--charcoal);
+      box-shadow:
+        0 16px 48px rgba(0,0,0,0.6),
+        0 0 0 1px rgba(255,255,255,0.06);
+    }
+
+    .featured-video-embed iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ─── MUSIC HEADER & SPOTIFY FOLLOW ─────────────────── */
+    .music-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .spotify-follow-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.5rem;
+      background: #1DB954;
+      color: #000000;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 50px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(29,185,84,0.35), inset 0 1px 0 rgba(255,255,255,0.3), inset 0 -1px 0 rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spotify-follow-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+    }
+
+    .spotify-follow-btn:hover {
+      background: #1ed760;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(29,185,84,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+
+    /* ─── TOUR EMPTY STATE ───────────────────────────────── */
+    .tour-empty {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      padding: 2.5rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px dashed rgba(255,255,255,0.1);
+      border-radius: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tour-empty-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--fog);
+      flex-shrink: 0;
+    }
+
+    .tour-empty-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .tour-empty-text h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .tour-empty-text p {
+      font-size: 0.88rem;
+      color: var(--fog);
+      line-height: 1.5;
+    }
+
+    .tour-empty-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+
+    .tour-empty-btn-primary {
+      display: inline-block;
+      padding: 0.65rem 1.4rem;
+      background: #C41833;
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .tour-empty-btn-primary:hover {
+      background: var(--rust);
+      transform: translateY(-2px);
+    }
+
+    .tour-empty-btn-secondary {
+      display: inline-block;
+      padding: 0.65rem 1.4rem;
+      background: transparent;
+      color: var(--fog);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .tour-empty-btn-secondary:hover {
+      border-color: rgba(255,255,255,0.25);
+      color: var(--white);
+    }
+
+    /* ─── MAILING LIST ───────────────────────────────────── */
+    #mailing-list {
+      background: var(--black);
+      padding: 4rem 2rem;
+    }
+
+    .mailing-list-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2.5rem;
+      padding: 3rem 3rem;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-top: 2px solid var(--rust);
+      border-radius: 16px;
+      flex-wrap: nowrap;
+      position: relative;
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.1),
+        inset 0 -1px 0 rgba(0,0,0,0.3);
+    }
+
+    .mailing-list-inner::before {
+      display: none;
+    }
+
+    .mailing-list-text {
+      flex: 1;
+      min-width: 0;
+      max-width: 520px;
+    }
+
+    .mailing-list-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .mailing-list-sub {
+      font-size: 1rem;
+      color: var(--fog);
+      line-height: 1.5;
+      max-width: 560px;
+    }
+
+    .mailing-list-divider {
+      width: 1px;
+      height: 60px;
+      background: rgba(255,255,255,0.1);
+      flex-shrink: 0;
+    }
+
+    .mailing-list-form {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      align-self: center;
+    }
+
+    .mailing-list-input {
+      padding: 0.85rem 1.2rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.0625rem;
+      letter-spacing: 0.05em;
+      width: 240px;
+      transition: border-color 0.2s, background 0.2s;
+      outline: none;
+    }
+
+    .mailing-list-input::placeholder {
+      color: var(--fog);
+    }
+
+    .mailing-list-input:focus {
+      border-color: rgba(235,32,61,0.5);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .mailing-list-btn {
+      padding: 0.85rem 1.8rem;
+      background: #C41833;
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(196,24,51,0.35), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mailing-list-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+    }
+
+    .mailing-list-btn:hover {
+      background: var(--rust);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(235,32,61,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    /* ─── FLUENT FORMS OVERRIDES (contact form) ─────────── */
+    .contact-form .ff-el-input--content input[type="text"],
+    .contact-form .ff-el-input--content input[type="email"],
+    .contact-form .ff-el-input--content select,
+    .contact-form .ff-el-input--content textarea {
+      width: 100% !important;
+      padding: 0.85rem 1rem !important;
+      background: rgba(255,255,255,0.05) !important;
+      border: 1px solid rgba(255,255,255,0.1) !important;
+      border-radius: 8px !important;
+      color: var(--white) !important;
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: 0.95rem !important;
+      letter-spacing: 0.04em !important;
+      transition: border-color 0.2s, background 0.2s !important;
+      outline: none !important;
+      box-shadow: none !important;
+      box-sizing: border-box !important;
+    }
+
+    .contact-form .ff-el-input--content input::placeholder,
+    .contact-form .ff-el-input--content textarea::placeholder {
+      color: var(--fog) !important;
+    }
+
+    .contact-form .ff-el-input--content input:focus,
+    .contact-form .ff-el-input--content textarea:focus {
+      border-color: rgba(235,32,61,0.5) !important;
+      background: rgba(255,255,255,0.07) !important;
+    }
+
+    .contact-form .ff-el-input--content select:focus {
+      border-color: rgba(235,32,61,0.5) !important;
+      background-color: rgba(255,255,255,0.07) !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a9088' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 1rem center !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Suppress Fluent Forms red outline on blur */
+    .contact-form .ff-el-input--content select:not(:focus) {
+      border-color: rgba(255,255,255,0.1) !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    .contact-form .ff-el-is-error .ff-el-input--content select,
+    .contact-form select.ff_has_error {
+      border-color: rgba(255,255,255,0.1) !important;
+      outline: none !important;
+    }
+
+    .contact-form .ff-el-input--content select {
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a9088' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 1rem center !important;
+      padding-right: 2.5rem !important;
+    }
+
+    .contact-form .ff-el-input--content select option {
+      background: var(--charcoal) !important;
+      color: var(--white) !important;
+    }
+
+    .contact-form .ff-el-input--content textarea {
+      min-height: 120px !important;
+      resize: vertical !important;
+    }
+
+    .contact-form .ff-el-input--label label {
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: 0.75rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.2em !important;
+      text-transform: uppercase !important;
+      color: var(--fog) !important;
+      margin-bottom: 0.4rem !important;
+      display: block !important;
+    }
+
+    .contact-form .ff-el-group {
+      margin-bottom: 0.8rem !important;
+    }
+
+    .contact-form .ff-el-input--content textarea {
+      min-height: 140px !important;
+      resize: vertical !important;
+    }
+
+    .contact-form .ff_submit_btn_wrapper {
+      margin-top: 0.5rem !important;
+    }
+
+    .contact-form .ff-btn-submit {
+      width: 100% !important;
+      padding: 1rem 2rem !important;
+      background: #C41833 !important;
+      color: var(--white) !important;
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: 0.95rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.15em !important;
+      text-transform: uppercase !important;
+      border: none !important;
+      border-radius: 8px !important;
+      cursor: pointer !important;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s !important;
+      box-shadow: 0 4px 16px rgba(196,24,51,0.35), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.15) !important;
+      position: relative !important;
+      overflow: hidden !important;
+    }
+
+    .contact-form .ff-btn-submit::before {
+      content: '' !important;
+      position: absolute !important;
+      inset: 0 !important;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0) 100%) !important;
+      pointer-events: none !important;
+    }
+
+    .contact-form .ff-btn-submit:hover {
+      background: var(--rust) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 24px rgba(235,32,61,0.5), inset 0 1px 0 rgba(255,255,255,0.2) !important;
+    }
+
+    .contact-form .ff-message-success {
+      color: var(--gold) !important;
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: 1rem !important;
+      letter-spacing: 0.05em !important;
+      background: rgba(228,140,34,0.08) !important;
+      border: 1px solid rgba(228,140,34,0.2) !important;
+      border-radius: 8px !important;
+      padding: 1rem 1.2rem !important;
+    }
+
+    .contact-form .error,
+    .contact-form .ff-el-is-error .error {
+      color: #FF4060 !important;
+      font-size: 0.75rem !important;
+      margin-top: 0.3rem !important;
+    }
+
+    /* Two column layout for name/email row */
+    .contact-form .ff-t-container {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Force flush alignment using exact FF selectors */
+    .contact-form .ff-column-container .ff-t-column-1 {
+      padding-left: 0 !important;
+      margin-left: 0 !important;
+    }
+
+    .contact-form .ff-column-container .ff-t-column-2 {
+      padding-right: 0 !important;
+      margin-right: 0 !important;
+    }
+
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    /* Target name/email fields directly via container classes */
+    .ff-name-field,
+    .ff-name-field .ff-el-group,
+    .ff-name-field input {
+      padding-left: 0 !important;
+      margin-left: 0 !important;
+    }
+
+    .ff-email-field,
+    .ff-email-field .ff-el-group,
+    .ff-email-field input {
+      padding-right: 0 !important;
+      margin-right: 0 !important;
+    }
+
+    .contact-form .ff-t-container {
+      margin: 0 !important;
+    }
+
+    /* ─── FLUENT FORMS OVERRIDES (mailing list) ─────────── */
+    .mailing-list-form .ff-el-input--content input[type="email"],
+    .mailing-list-form .ff-el-input--content input[type="text"] {
+      padding: 0.85rem 1.2rem !important;
+      background: rgba(255,255,255,0.05) !important;
+      border: 1px solid rgba(255,255,255,0.12) !important;
+      border-radius: 8px !important;
+      color: var(--white) !important;
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: 0.95rem !important;
+      letter-spacing: 0.05em !important;
+      width: 300px !important;
+      transition: border-color 0.2s, background 0.2s !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    .mailing-list-form .ff-el-input--content input::placeholder {
+      color: var(--fog) !important;
+    }
+
+    .mailing-list-form .ff-el-input--content input:focus {
+      border-color: rgba(235,32,61,0.5) !important;
+      background: rgba(255,255,255,0.07) !important;
+    }
+
+    .mailing-list-form .ff_submit_btn_wrapper,
+    .mailing-list-form .ff-btn-submit {
+      width: auto !important;
+    }
+
+    .mailing-list-form .ff-btn-submit {
+      padding: 0.85rem 1.8rem !important;
+      background: #C41833 !important;
+      color: var(--white) !important;
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: 0.85rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.15em !important;
+      text-transform: uppercase !important;
+      border: none !important;
+      border-radius: 8px !important;
+      cursor: pointer !important;
+      white-space: nowrap !important;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s !important;
+      box-shadow: 0 4px 16px rgba(196,24,51,0.35), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.15) !important;
+      position: relative !important;
+      overflow: hidden !important;
+    }
+
+    .mailing-list-form .ff-btn-submit::before {
+      content: '' !important;
+      position: absolute !important;
+      inset: 0 !important;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0) 100%) !important;
+      pointer-events: none !important;
+    }
+
+    .mailing-list-form .ff-btn-submit:hover {
+      background: var(--rust) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 24px rgba(235,32,61,0.5), inset 0 1px 0 rgba(255,255,255,0.2) !important;
+    }
+
+    .mailing-list-form .fluentform {
+      display: flex !important;
+      gap: 0.75rem !important;
+      align-items: center !important;
+      flex-wrap: wrap !important;
+    }
+
+    .mailing-list-form .ff-t-container,
+    .mailing-list-form .ff-t-cell,
+    .mailing-list-form .ff-t-column-1,
+    .mailing-list-form .ff-t-column-2 {
+      display: flex !important;
+      align-items: center !important;
+      margin-bottom: 0 !important;
+      padding: 0 !important;
+      height: auto !important;
+    }
+
+    .mailing-list-form .ff_submit_btn_wrapper {
+      display: flex !important;
+      align-items: center !important;
+      height: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .mailing-list-form .ff-el-group {
+      margin-bottom: 0 !important;
+    }
+
+    .mailing-list-form .ff-el-input--label {
+      display: none !important;
+    }
+
+    .mailing-list-form .ff-message-success {
+      color: var(--gold) !important;
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: 0.95rem !important;
+      letter-spacing: 0.05em !important;
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+
+    .mailing-list-form .error,
+    .mailing-list-form .ff-el-is-error .error {
+      color: #FF4060 !important;
+      font-size: 0.75rem !important;
+      margin-top: 0.3rem !important;
+    }
+
+    @media (max-width: 480px) {
+      .mailing-list-form .ff-el-input--content input[type="email"] {
+        width: 100% !important;
+      }
+      .mailing-list-form .fluentform,
+      .mailing-list-form .ff-t-container {
+        flex-direction: column !important;
+        width: 100% !important;
+      }
+      .mailing-list-form .ff-t-cell,
+      .mailing-list-form .ff-t-column-1,
+      .mailing-list-form .ff-t-column-2,
+      .mailing-list-form .ff-el-group,
+      .mailing-list-form .ff_submit_btn_wrapper {
+        width: 100% !important;
+      }
+      .mailing-list-form .ff-btn-submit {
+        width: 100% !important;
+      }
+      .superfan-callout {
+        align-items: flex-start !important;
+        gap: 0.8rem !important;
+      }
+      .superfan-callout-text {
+        white-space: normal !important;
+      }
+    }
+
+    .superfan-callout:hover {
+      background: rgba(255,255,255,0.06) !important;
+      border-color: rgba(255,255,255,0.15) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.2) !important;
+    }
+
+    /* ─── PODCAST CALLOUT ───────────────────────────────── */
+    .podcast-callout {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      padding: 1.1rem 1.2rem;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(12px) saturate(150%);
+      -webkit-backdrop-filter: blur(12px) saturate(150%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-left: 3px solid var(--gold);
+      border-radius: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2);
+      transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    .podcast-callout:hover {
+      background: rgba(255,255,255,0.06);
+      border-left-color: var(--gold);
+      border-color: rgba(255,255,255,0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.2);
+    }
+
+    .podcast-callout-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .podcast-callout:hover .podcast-callout-icon {
+      background: rgba(0,0,0,0.4);
+    }
+
+    .podcast-callout-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .podcast-callout-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--fog);
+    }
+
+    .podcast-callout-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .podcast-callout-sub {
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: var(--fog);
+      line-height: 1.45;
+    }
+
+    /* ─── INNER CIRCLE ───────────────────────────────────── */
+    #inner-circle {
+      background: var(--deep);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      position: relative;
+      overflow: hidden;
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+
+    .inner-circle-bg {
+      position: absolute;
+      inset: -25%;
+      background-image: url('images/album-freaky-franky.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.12;
+      z-index: 0;
+      will-change: transform;
+    }
+
+    .inner-circle-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.2) 40%, rgba(10,10,10,0.7) 100%);
+    }
+
+    #inner-circle .section-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    #inner-circle::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(235,32,61,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .inner-circle-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .inner-circle-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(235,32,61,0.12);
+      border: 1px solid rgba(235,32,61,0.25);
+      border-radius: 4px;
+      padding: 0.3rem 0.85rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1.5rem;
+      animation: pulse-badge-soft 4s ease-in-out infinite;
+    }
+
+    .inner-circle-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--rust);
+      animation: pulse-badge-soft 4s ease-in-out infinite;
+    }
+
+    .inner-circle-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      letter-spacing: 0.04em;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .inner-circle-sub {
+      font-size: 1.05rem;
+      color: var(--fog);
+      max-width: 480px;
+      margin: 0 auto 3rem;
+      line-height: 1.6;
+    }
+
+    .inner-circle-perks-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .inner-circle-perks {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 3rem;
+      text-align: left;
+    }
+
+    .inner-circle-perk {
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(12px) saturate(150%);
+      -webkit-backdrop-filter: blur(12px) saturate(150%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 1.1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      box-shadow:
+        0 4px 16px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        inset 0 -1px 0 rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+
+    .inner-circle-perk:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(235,32,61,0.3);
+      transform: translateY(-2px);
+      box-shadow:
+        0 8px 24px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        inset 0 -1px 0 rgba(235,32,61,0.2);
+    }
+
+    /* ── PERK MODAL ── */
+    .perk-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(235,32,61,0.04) 0%, transparent 70%),
+        rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .perk-modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .perk-modal {
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-left: 3px solid var(--rust);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 440px;
+      width: 100%;
+      position: relative;
+      box-shadow:
+        0 24px 64px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        inset 0 -1px 0 rgba(0,0,0,0.2);
+      transform: translateY(12px);
+      transition: transform 0.2s ease;
+    }
+
+    .perk-modal-overlay.open .perk-modal {
+      transform: translateY(0);
+    }
+
+    .perk-modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--fog);
+      cursor: pointer;
+      padding: 0.25rem;
+      line-height: 1;
+      font-size: 1.1rem;
+      transition: color 0.2s;
+    }
+    .perk-modal-close:hover { color: var(--white); }
+
+    .perk-modal-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
+
+    .perk-modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+      line-height: 1;
+    }
+
+    .perk-modal-desc {
+      font-size: 1rem;
+      color: var(--bone);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .perk-modal-desc p { margin-bottom: 0.9rem; }
+    .perk-modal-desc p:last-child { margin-bottom: 0; color: var(--fog); }
+
+    .inner-circle-perk-icon {
+      font-size: 1.2rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .inner-circle-perk-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .inner-circle-perk-desc {
+      font-size: 0.82rem;
+      color: var(--fog);
+      line-height: 1.45;
+      font-weight: 300;
+    }
+
+    .inner-circle-support-note {
+      font-size: 1.05rem;
+      color: var(--fog);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .inner-circle-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.8rem 1.6rem;
+      background: #C41833;
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 8px;
+      white-space: nowrap;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(196,24,51,0.35), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.15);
+    }
+
+    .inner-circle-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+    }
+
+    .inner-circle-cta:hover {
+      background: var(--rust);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(235,32,61,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    @media (max-width: 680px) {
+      .inner-circle-perks { grid-template-columns: repeat(2, 1fr); }
+      .hero-cta {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1rem;
+        width: 100%;
+      }
+      .btn-primary, .btn-ghost {
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .inner-circle-perks { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ─── SOCIAL ─────────────────────────────────────────── */
+    #social {
+      background: var(--deep);
+    }
+
+    .tiktok-callout {
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 2rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tiktok-callout::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(235,32,61,0.06) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .tiktok-callout::after {
+      display: none;
+    }
+
+    .tiktok-live-badge {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--white);
+      background: var(--rust);
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      flex-shrink: 0;
+      box-shadow: 0 0 12px rgba(235,32,61,0.4), inset 0 1px 0 rgba(255,255,255,0.25), inset 0 -1px 0 rgba(0,0,0,0.15);
+      animation: pulse-badge 2s ease-in-out infinite;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tiktok-live-badge::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%);
+      pointer-events: none;
+    }
+
+    @keyframes pulse-badge {
+      0%, 100% { box-shadow: 0 0 12px rgba(235,32,61,0.4); }
+      50%       { box-shadow: 0 0 24px rgba(235,32,61,0.7); }
+    }
+
+    @keyframes pulse-badge-soft {
+      0%, 100% { box-shadow: 0 0 6px rgba(235,32,61,0.15); }
+      50%       { box-shadow: 0 0 12px rgba(235,32,61,0.3); }
+    }
+
+    .tiktok-callout-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .tiktok-callout-text h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+      white-space: nowrap;
+    }
+
+    .tiktok-callout-text p {
+      font-size: 1rem;
+      color: var(--fog);
+      letter-spacing: 0.02em;
+      line-height: 1.5;
+    }
+
+    .tiktok-follow-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.8rem 1.6rem;
+      background: #C41833;
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 8px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(196,24,51,0.35), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.15);
+    }
+
+    .tiktok-follow-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+    }
+
+    .tiktok-follow-btn:hover {
+      background: var(--rust);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(235,32,61,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    .social-platforms {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .social-platform-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.2rem 1.5rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    /* Inner shimmer sweep — shared */
+    .social-platform-link::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 50%);
+      pointer-events: none;
+      border-radius: 12px;
+      z-index: 0;
+    }
+
+    .social-platform-link::after {
+      display: none;
+    }
+
+    /* Instagram — pink/purple, icon left, content right */
+    .social-platform-link:nth-child(1) {
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* YouTube — red */
+    .social-platform-link:nth-child(2) {
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* Facebook — blue */
+    .social-platform-link:nth-child(3) {
+      background: rgba(255,255,255,0.04);
+    }
+
+    .social-platform-link:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.18);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+
+    .social-platform-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--fog);
+      flex-shrink: 0;
+      transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    .social-platform-icon svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .social-platform-link:nth-child(1):hover .social-platform-icon { color: #E1306C; background: rgba(225,48,108,0.15); box-shadow: 0 0 12px rgba(225,48,108,0.3), inset 0 1px 0 rgba(255,255,255,0.15); }
+    .social-platform-link:nth-child(2):hover .social-platform-icon { color: #FF0000; background: rgba(255,0,0,0.15); box-shadow: 0 0 12px rgba(255,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15); }
+    .social-platform-link:nth-child(3):hover .social-platform-icon { color: #1877F2; background: rgba(24,119,242,0.15); box-shadow: 0 0 12px rgba(24,119,242,0.3), inset 0 1px 0 rgba(255,255,255,0.15); }
+
+    /* Resting brand tints */
+    .social-platform-link:nth-child(1) .social-platform-icon { color: rgba(225,48,108,0.7); background: rgba(225,48,108,0.08); border-color: rgba(255,255,255,0.08); }
+    .social-platform-link:nth-child(2) .social-platform-icon { color: rgba(255,0,0,0.6); background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
+    .social-platform-link:nth-child(3) .social-platform-icon { color: rgba(24,119,242,0.7); background: rgba(24,119,242,0.08); border-color: rgba(255,255,255,0.08); }
+
+    .social-platform-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .social-platform-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .social-platform-handle {
+      font-size: 1rem;
+      color: var(--gold);
+      letter-spacing: 0.02em;
+    }
+
+    .social-platform-desc {
+      font-size: 0.9rem;
+      color: var(--fog);
+      letter-spacing: 0.02em;
+    }
+
+    .contact-socials {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-top: 1.6rem;
+      padding-top: 1.6rem;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .contact-social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fog);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-social-link:hover {
+      color: var(--white);
+    }
+
+    .contact-social-link.instagram:hover { color: #E1306C; }
+    .contact-social-link.tiktok:hover { color: #69C9D0; }
+    .contact-social-link.facebook:hover { color: #1877F2; }
+
+    .contact-email-link {
+      display: inline-block;
+      margin-top: 1.2rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--gold);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-email-link:hover {
+      color: var(--white);
+    }
+
+    /* ─── MERCH TEASER ──────────────────────────────────── */
+    #merch {
+      background: var(--black);
+      border-top: 1px solid var(--ash);
+      padding: 5rem 2rem;
+    }
+
+    .merch-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .merch-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .merch-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .merch-badge {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--ash);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 0.3rem 0.75rem;
+      border-radius: 4px;
+      align-self: center;
+      white-space: nowrap;
+    }
+
+    .merch-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .merch-heading span {
+      color: var(--rust);
+      -webkit-text-stroke: 0px;
+    }
+
+    .merch-sub {
+      font-size: 1rem;
+      color: var(--fog);
+      line-height: 1.6;
+      max-width: 480px;
+    }
+
+    .merch-cta {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .merch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 2.5rem;
+      background: transparent;
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+
+    .merch-btn:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.35);
+      transform: translateY(-2px);
+    }
+
+    .merch-note {
+      font-size: 0.8rem;
+      color: var(--fog);
+      letter-spacing: 0.05em;
+      opacity: 0.7;
+    }
+
+    .merch-preview {
+      display: flex;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+
+    .merch-placeholder-item {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      background: var(--charcoal);
+      border: 1px solid var(--ash);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ash);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .merch-placeholder-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(235,32,61,0.06) 0%, transparent 60%);
+    }
+
+    .merch-placeholder-item:nth-child(2) {
+      opacity: 0.6;
+      transform: translateY(8px);
+    }
+
+    .merch-placeholder-item:nth-child(3) {
+      opacity: 0.3;
+      transform: translateY(16px);
+    }
+
+    @media (max-width: 768px) {
+      .merch-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .merch-preview {
+        display: none;
+      }
+      .merch-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* ─── FOOTER ───────────────────────────────────────── */
+    footer {
+      background: var(--deep);
+      border-top: 1px solid var(--ash);
+      padding: 0;
+    }
+
+    .footer-inner {
+      max-width: 1460px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Back to top */
+    .back-to-top {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem;
+      background: none;
+      border: none;
+      border-bottom: 1px solid var(--ash);
+      width: 100%;
+      justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fog);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .back-to-top:hover { color: var(--white); }
+
+    /* Main grid */
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 4rem;
+      padding: 3rem 0 2.5rem;
+      border-bottom: 1px solid var(--ash);
+    }
+
+    /* Brand col */
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.2em;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-logo span { color: var(--rust); }
+
+    .footer-bio {
+      font-size: 1rem;
+      color: var(--fog);
+      line-height: 1.7;
+      max-width: 300px;
+      margin-bottom: 1.4rem;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .footer-social-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--fog);
+      text-decoration: none;
+      transition: color 0.2s, background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.1);
+    }
+
+    .footer-social-icon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 60%);
+      pointer-events: none;
+      border-radius: 8px;
+    }
+
+    .footer-social-icon:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+    .footer-social-icon.instagram:hover { color: #E1306C; border-color: rgba(225,48,108,0.4); box-shadow: 0 4px 12px rgba(225,48,108,0.25), inset 0 1px 0 rgba(255,255,255,0.15); }
+    .footer-social-icon.tiktok:hover { color: #69C9D0; border-color: rgba(105,201,208,0.4); box-shadow: 0 4px 12px rgba(105,201,208,0.25), inset 0 1px 0 rgba(255,255,255,0.15); }
+    .footer-social-icon.youtube:hover { color: #FF0000; border-color: rgba(255,0,0,0.4); box-shadow: 0 4px 12px rgba(255,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.15); }
+    .footer-social-icon.facebook:hover { color: #1877F2; border-color: rgba(24,119,242,0.4); box-shadow: 0 4px 12px rgba(24,119,242,0.25), inset 0 1px 0 rgba(255,255,255,0.15); }
+
+    /* Nav + Stream cols */
+    .footer-col-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1rem;
+    }
+
+    .footer-nav, .footer-stream {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .footer-nav a, .footer-stream-link {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--fog);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-nav a:hover { color: var(--white); }
+
+    .footer-stream-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-stream-link.spotify:hover { color: #1DB954; }
+    .footer-stream-link.apple:hover { color: #fc3c44; }
+    .footer-stream-link.youtube-music:hover { color: #FF0000; }
+
+    /* Bottom bar */
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 0;
+    }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      color: var(--ash);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-bottom-links a {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ash);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-bottom-links a:hover { color: var(--fog); }
+
+    /* ─── ANIMATIONS ─────────────────────────────────────*/
+    .tour-loading {
+      display: flex;
+      justify-content: center;
+      padding: 3rem 0;
+      color: var(--fog);
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes growLine {
+      from { transform: scaleY(0); }
+      to   { transform: scaleY(1); }
+    }
+
+    /* ─── SCROLL REVEAL ──────────────────────────────────*/
+    .reveal {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.hidden {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .reveal.hidden.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger album cards on scroll-in without affecting hover */
+    .album-card.reveal.hidden:nth-child(2) { transition-delay: 0.1s; }
+    .album-card.reveal.hidden:nth-child(3) { transition-delay: 0.2s; }
+    .album-card.reveal.hidden:nth-child(4) { transition-delay: 0.3s; }
+
+    /* ─── DIVIDER ─────────────────────────────────────── */
+    .divider {
+      width: 40px; height: 2px;
+      background: var(--rust);
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    /* Streaming buttons */
+    .stream-links {
+      display: flex;
+      gap: 0.35rem;
+      margin-top: 0.8rem;
+      flex-wrap: nowrap;
+    }
+
+    .stream-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.35rem 0.5rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(200,191,176,0.2);
+      color: var(--fog);
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      white-space: nowrap;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .stream-btn:hover { color: var(--white); border-color: var(--white); }
+    .stream-btn.spotify:hover  { border-color: #1DB954; color: #1DB954; }
+    .stream-btn.apple:hover    { border-color: #fc3c44; color: #fc3c44; }
+    .stream-btn.youtube:hover  { border-color: #FF0000; color: #FF0000; }
+
+    .stream-btn svg { width: 12px; height: 12px; fill: currentColor; }
+
+    /* ─── LIQUID GLASS ELEMENTS ─────────────────────────── */
+
+    /* Glass mixin base */
+    .glass {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    /* Nav gets glass treatment */
+    nav {
+      background: rgba(10, 10, 10, 0.3) !important;
+      backdrop-filter: blur(24px) saturate(200%);
+      -webkit-backdrop-filter: blur(24px) saturate(200%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.3);
+    }
+
+    /* Album cards — liquid glass */
+    .album-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .album-card:hover {
+      border-color: rgba(235, 32, 61, 0.4);
+      box-shadow:
+        0 0 0 1px rgba(235, 32, 61, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    }    .album-art {
+      border-radius: 0;
+    }
+
+    .album-info {
+      padding: 1rem 1.2rem 1.2rem;
+      background: rgba(255,255,255,0.02);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* Tour items — glass pill */
+    .tour-item {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px) saturate(150%);
+      -webkit-backdrop-filter: blur(12px) saturate(150%);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+
+    .tour-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: transparent;
+      transform: translateX(4px);
+      box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 0 0 1px rgba(235, 32, 61, 0.0),
+        inset 0 -1px 0 rgba(235, 32, 61, 0.5),
+        inset 0 1px 0 rgba(235, 32, 61, 0.5);
+      outline: none;
+    }
+
+    /* Contact form — glass card */
+    /* Form inputs — glass style */
+    input, select, textarea {
+      background: rgba(255, 255, 255, 0.05) !important;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 8px !important;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s !important;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: rgba(235, 32, 61, 0.6) !important;
+      box-shadow: 0 0 0 3px rgba(235, 32, 61, 0.15), inset 0 1px 0 rgba(255,255,255,0.05) !important;
+    }
+
+    /* Buttons — glass shimmer */
+    .btn-primary {
+      background: rgba(196, 24, 51, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      box-shadow:
+        0 4px 16px rgba(235, 32, 61, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background: rgba(158, 18, 20, 0.9);
+      box-shadow:
+        0 8px 28px rgba(235, 32, 61, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Streaming buttons — glass pill */
+    .stream-btn {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 6px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      transition: all 0.2s ease;
+    }
+
+    .stream-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    /* About section image — glass frame */
+    .about-img-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow:
+        0 24px 64px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    /* Hero CTA area subtle glass pill */
+    .hero-cta {
+      padding: 1.2rem 1.5rem;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      display: inline-flex;
+      gap: 1.2rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 24px rgba(0,0,0,0.3);
+      opacity: 0;
+      animation: fadeUp 0.9s 0.8s forwards;
+    }
+
+    /* Footer glass bar */
+    footer {
+      background: rgba(255,255,255,0.02);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      box-shadow: 0 -1px 0 rgba(255,255,255,0.04);
+    }
+
+    /* ─── SPOTIFY CARD FLIP ─────────────────────────────── */
+    .album-art {
+      width: 100%;
+      aspect-ratio: 1;
+      position: relative;
+      perspective: 1000px;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .album-art-flipper {
+      width: 100%; height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .album-art.flipped .album-art-flipper {
+      transform: rotateY(180deg);
+    }
+
+    .album-art-front,
+    .album-art-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .album-art-front {
+      overflow: hidden;
+    }
+
+    .album-art-back {
+      transform: rotateY(180deg);
+      background: #0a0a0a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3.5rem 1rem 1rem;
+      border-radius: inherit;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .album-art-back iframe {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      height: 100%;
+      min-height: 80px;
+      border: none;
+      border-radius: 8px;
+      display: block;
+      box-sizing: border-box;
+    }
+
+    .album-art-close {
+      position: absolute;
+      top: 0.6rem;
+      left: 0.6rem;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      cursor: pointer;
+      pointer-events: all !important;
+      transition: background 0.2s, color 0.2s;
+      z-index: 20;
+    }
+
+    .album-art-close:hover {
+      background: rgba(255,255,255,0.25);
+      color: var(--white);
+    }
+
+    .album-art-back iframe {
+      width: 100%;
+      min-width: 0;
+      height: 100%;
+      min-height: 80px;
+      border: none;
+      border-radius: 8px;
+      display: block;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+
+    /* ── Hamburger nav (tablet + mobile) ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+      z-index: 200;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--bone);
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-menu {
+      transition: all 0.35s ease;
+    }
+
+    /* Tablet — 481px to 1024px */
+    @media (min-width: 1025px) {
+      .music-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+      }
+    }
+
+    @media (max-width: 1024px) and (min-width: 481px) {
+
+      /* Nav — hamburger */
+      nav {
+        padding: 1.1rem 2.5rem;
+      }
+      .nav-hamburger {
+        display: flex;
+      }
+      .nav-menu {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 10, 10, 0.85);
+        backdrop-filter: blur(32px) saturate(180%);
+        -webkit-backdrop-filter: blur(32px) saturate(180%);
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0;
+        padding: 5rem 2rem 4rem;
+        z-index: 150;
+        min-height: 100vh;
+        border-bottom: 1px solid rgba(235,32,61,0.2);
+      }
+
+      
+
+      .nav-menu.open {
+        display: flex;
+        animation: navFadeIn 0.25s ease forwards;
+      }
+
+      @keyframes navFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      .nav-menu-platforms {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 1rem;
+        list-style: none;
+        margin-top: auto;
+        padding-top: 3rem;
+        padding-bottom: 1rem;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        width: 100%;
+      }
+
+      .nav-menu li {
+        list-style: none;
+      }
+      .nav-links-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        flex: 1;
+        justify-content: center;
+      }
+      .nav-menu.open a {
+        font-size: 1.4rem;
+        letter-spacing: 0.25em;
+      }
+      #hero {
+        padding: 0 2.5rem 5rem;
+        height: 100vh;
+      }
+
+      /* Sections */
+      section {
+        padding: 6rem 2.5rem;
+      }
+
+      /* Mailing list — stays horizontal on tablet, handled below */
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      .about-img-wrap {
+        max-width: 480px;
+        margin: 0 auto;
+      }
+
+      /* Music grid — 2 columns on tablet, fluid iframe padding */
+      .music-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      /* Shrink back-face padding as cards get narrower to keep iframe fitting */
+      .album-art-back {
+        padding: 3.5rem 0.5rem 0.5rem;
+      }
+
+      /* Tour */
+      .tour-item {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem 1.5rem;
+        padding: 1.3rem 1.5rem;
+        align-items: center;
+      }
+      .tour-date {
+        flex: 0 0 80px;
+      }
+      .tour-item > div:nth-child(2) {
+        flex: 1 1 200px;
+        min-width: 0;
+      }
+      .tour-item .tour-actions {
+        flex: 0 0 auto;
+      }
+      .atc-dropdown {
+        bottom: calc(100% + 0.4rem);
+        top: auto;
+      }
+
+      /* Contact — keep 2 col on tablet, tighten gap */
+      .contact-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        padding: 2.5rem;
+      }
+
+      /* Social */
+      .social-platforms {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+
+      /* Footer */
+      footer {
+        padding: 0;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+      }
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* Mobile — up to 480px */
+    /* ── Switch to 1-col when 2-col cards can no longer fit iframe ── */
+    @media (max-width: 900px) {
+      .mailing-list-inner {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 2rem 1.5rem;
+        gap: 1.5rem;
+      }
+      .mailing-list-form {
+        flex-direction: column;
+        width: 100%;
+        align-items: stretch;
+      }
+      .mailing-list-input {
+        width: 100% !important;
+        box-sizing: border-box;
+      }
+      .mailing-list-btn {
+        width: 100% !important;
+      }
+      .mailing-list-form .fluentform {
+        flex-direction: column !important;
+        width: 100% !important;
+        align-items: stretch !important;
+      }
+      .mailing-list-form .ff-t-container {
+        flex-direction: column !important;
+        width: 100% !important;
+      }
+      .mailing-list-form .ff-t-cell,
+      .mailing-list-form .ff-t-column-1,
+      .mailing-list-form .ff-t-column-2,
+      .mailing-list-form .ff-el-group,
+      .mailing-list-form .ff-el-input--content {
+        width: 100% !important;
+      }
+      .mailing-list-form .ff-el-input--content input[type="email"],
+      .mailing-list-form .ff-el-input--content input[type="text"] {
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .mailing-list-form .ff_submit_btn_wrapper,
+      .mailing-list-form .ff-btn-submit {
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+    }
+
+    @media (max-width: 780px) {
+      .tiktok-callout {
+        flex-direction: column;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1.5rem;
+      }
+      .tiktok-callout-text h3 {
+        white-space: normal;
+        font-size: 1.8rem;
+      }
+      .tiktok-follow-btn {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.75rem;
+      }
+    }
+
+    @media (max-width: 680px) and (min-width: 481px) {
+      .music-grid {
+        grid-template-columns: 1fr;
+      }
+      .album-art-back {
+        padding: 3.5rem 1rem 1rem;
+      }
+      .social-platforms {
+        grid-template-columns: 1fr;
+      }
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── Mobile (≤480px) ── */
+    @media (max-width: 480px) {
+      nav {
+        padding: 1rem 1.2rem;
+      }
+      .nav-hamburger {
+        display: flex;
+      }
+      .nav-menu {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 10, 10, 0.85);
+        backdrop-filter: blur(32px) saturate(180%);
+        -webkit-backdrop-filter: blur(32px) saturate(180%);
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0;
+        padding: 5rem 2rem 4rem;
+        z-index: 150;
+        min-height: 100vh;
+        border-bottom: 1px solid rgba(235,32,61,0.2);
+      }
+      .nav-menu.open {
+        display: flex;
+        animation: navFadeIn 0.25s ease forwards;
+      }
+      .nav-menu li {
+        list-style: none;
+      }
+      .nav-links-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        flex: 1;
+        justify-content: center;
+      }
+      .nav-menu.open a {
+        font-size: 1.2rem;
+        letter-spacing: 0.2em;
+      }
+      .nav-menu-platforms {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 1rem;
+        list-style: none;
+        margin-top: auto;
+        padding-top: 3rem;
+        padding-bottom: 1rem;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        width: 100%;
+      }
+
+      /* Hero */
+      #hero {
+        padding: 0 1.2rem 3rem;
+        height: 100vh;
+      }
+      .hero-title {
+        font-size: clamp(5rem, 18vw, 7rem);
+      }
+      .hero-title .offset {
+        -webkit-text-stroke: 2px rgba(200,191,176,0.4);
+      }
+      .hero-eyebrow {
+        text-shadow: 0 1px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.8);
+      }
+      .hero-sub {
+        font-size: 1rem;
+      }
+      .hero-scroll {
+        display: none;
+      }
+
+      /* Sections */
+      section {
+        padding: 4rem 1.2rem;
+      }
+
+      /* Mailing list */
+      .mailing-list-inner {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1.8rem 1.2rem;
+        gap: 1.2rem;
+      }
+      .mailing-list-form {
+        flex-direction: column;
+        width: 100%;
+      }
+      .mailing-list-input {
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .mailing-list-btn {
+        width: 100%;
+      }
+      .mailing-list-form .ff-el-input--content input[type="email"],
+      .mailing-list-form .ff-el-input--content input[type="text"] {
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .mailing-list-form .fluentform {
+        flex-direction: column !important;
+        width: 100% !important;
+      }
+      .mailing-list-form .ff-el-group {
+        width: 100% !important;
+      }
+      .mailing-list-form .ff_submit_btn_wrapper,
+      .mailing-list-form .ff-btn-submit {
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      /* About */
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      .about-text {
+        grid-column: auto;
+      }
+      .about-img-wrap {
+        max-width: 340px;
+        margin: 0 auto;
+      }
+
+      /* Music grid — 1 column on mobile */
+      .music-header {
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        gap: 1rem;
+      }
+      .spotify-follow-btn {
+        width: auto;
+        flex-shrink: 0;
+        font-size: 0.72rem;
+        padding: 0.6rem 1rem;
+        letter-spacing: 0.08em;
+      }
+      .music-grid {
+        grid-template-columns: 1fr;
+      }
+      .album-art-back {
+        padding: 3.5rem 1rem 1rem;
+      }
+
+      /* Tour empty state */
+      .tour-empty {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.2rem;
+        padding: 1.5rem;
+      }
+      .tour-empty-actions {
+        width: 100%;
+      }
+      .tour-empty-btn-primary,
+      .tour-empty-btn-secondary {
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Tour — stack date above venue */
+      .tour-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto auto;
+        gap: 0.75rem 1rem;
+        padding: 1.2rem;
+        align-items: start;
+      }
+      .tour-date {
+        grid-column: 1;
+        grid-row: 1;
+        font-size: 1.4rem;
+        display: flex;
+        flex-direction: column;
+      }
+      .tour-date span {
+        display: block;
+        margin-top: 0.15rem;
+      }
+      .tour-item > div:nth-child(2) {
+        grid-column: 1 / 3;
+        grid-row: 2;
+      }
+      .tour-item .tour-actions {
+        grid-column: 1 / 3;
+        grid-row: 3;
+        justify-self: start;
+      }
+      .atc-dropdown {
+        bottom: calc(100% + 0.4rem);
+        top: auto;
+      }
+
+      /* Mailing list */
+      .mailing-list-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.8rem 1.5rem;
+        gap: 1.5rem;
+      }
+      .mailing-list-form {
+        width: 100%;
+        flex-direction: column;
+      }
+      .mailing-list-input {
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .mailing-list-btn {
+        width: 100%;
+      }
+
+      /* Social */
+      .social-platforms {
+        grid-template-columns: 1fr;
+      }
+
+      /* Contact */
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 1.5rem 1rem;
+        border-radius: 12px;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      /* Footer */
+      footer {
+        padding: 0;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem 0;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        gap: 0.8rem;
+        text-align: center;
+      }
+    }
+</style>
+
+<!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar" id="announcement-bar">
+    <a href="#mailing-list" class="announcement-bar-link">
+      <span class="announcement-bar-dot"></span>
+      Merch dropping soon — be the first to know
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+    <button class="announcement-bar-close" onclick="document.getElementById('announcement-bar').style.display='none';document.querySelector('nav').style.top='0'" aria-label="Dismiss">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+<!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+    <a href="#hero" class="nav-logo">JADEN <span>MONEY</span></a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="nav-menu">
+      <li class="nav-links-group">
+        <a href="#about" onclick="closeNav()">About</a>
+        <a href="#music" onclick="closeNav()">Music</a>
+        <a href="#social" onclick="closeNav()">Social</a>
+        <a href="#inner-circle" onclick="closeNav()">Inner Circle</a>
+        <a href="#tour" onclick="closeNav()">Shows</a>
+        <a href="#contact" onclick="closeNav()">Contact</a>
+      </li>
+      <li class="nav-menu-platforms">
+        <a href="https://open.spotify.com/artist/5U5Fm47sfsTi3TholNuTPm?si=aHCYRA-5S02xQfwj1Gyi-A" target="_blank" class="nav-platform-btn spotify" aria-label="Spotify">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        </a>
+        <a href="https://music.apple.com/us/artist/jaden-money/1674955100" target="_blank" class="nav-platform-btn apple" aria-label="Apple Music">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@jadenmoney_" target="_blank" class="nav-platform-btn tiktok" aria-label="TikTok">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+        </a>
+        <a href="https://music.youtube.com/channel/UCMW91wRQwOMHJ8mRWR6RTLw?si=66GCROmGM3YEOdJh" target="_blank" class="nav-platform-btn youtube-music" aria-label="YouTube Music">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 19.104c-3.924 0-7.104-3.18-7.104-7.104S8.076 4.896 12 4.896s7.104 3.18 7.104 7.104-3.18 7.104-7.104 7.104zm0-13.332c-3.432 0-6.228 2.796-6.228 6.228S8.568 18.228 12 18.228s6.228-2.796 6.228-6.228S15.432 5.772 12 5.772zM9.684 15.54V8.46L16.2 12l-6.516 3.54z"/></svg>
+        </a>
+      </li>
+    </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="section-inner">
+    <div class="hero-eyebrow">Alt-Rock · New Music Out Now</div>
+    <h1 class="hero-title">
+      JADEN
+      <span class="offset">MONEY</span>
+    </h1>
+    <p class="hero-sub">Stream the latest. Catch her live. Book a show.</p>
+    <div class="hero-cta">
+      <a href="#music" class="btn-primary">Listen Now</a>
+      <a href="#tour" class="btn-ghost">Upcoming Shows</a>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <img src="images/about-jaden.jpg" alt="Jaden Money live on stage" style="width:100%;object-fit:cover;object-position:center top;display:block;" />
+      </div>
+      <div class="about-text reveal">
+        <div class="section-label">About</div>
+        <h2 class="section-title">The Story</h2>
+        <p>
+          Jaden Money is an alt-rock artist blending grungy guitars with dark, emotionally raw lyricism. Originally from the Memphis area and now based in Wilmington, NC, her music explores themes of escapism, identity, and toxic attachment. By balancing vulnerability with a sharp-edged defiance, she creates a sound that is both restless and unfiltered.
+        </p>
+        <blockquote class="about-quote">
+          "Haunting, heavy, and unapologetically honest."
+        </blockquote>
+        <p>
+          Influenced by '90s grunge and the powerful vocals of early-2000s alternative rock, Jaden's music carries the weight of the artists who came before while carving out something entirely her own. She pairs a massive vocal delivery with a heavy, grit-driven sonic landscape that mirrors the tension and release found in her lyrics.
+        </p>
+        <p class="about-booking-text">
+          Jaden is available for original sets, acoustic cover performances, festivals, and private bookings.
+        </p>
+        <div style="margin-top:2rem;">
+          <a href="#contact" class="btn-primary">Book a Show</a>
+        </div>
+        <a href="https://www.youtube.com/live/EuXV-lsDcI4" target="_blank" class="podcast-callout">
+          <div class="podcast-callout-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1a11 11 0 100 22A11 11 0 0012 1zm-1 6v10l7-5-7-5z"/></svg>
+          </div>
+          <div class="podcast-callout-text">
+            <span class="podcast-callout-label">Featured Interview</span>
+            <span class="podcast-callout-title">Voice & The Pen Podcast</span>
+            <span class="podcast-callout-sub">Inspiration, songwriting & an exclusive live performance of "Fly" on Coastal Carolina Network</span>
+          </div>
+
+        </a>
+      </div>
+    </div>
+      </div>
+  </section>
+
+  <!-- MUSIC -->
+  <section id="music">
+    <div class="section-inner">
+    <div class="music-header reveal">
+      <div>
+        <div class="section-label">Discography</div>
+        <h2 class="section-title" style="margin-bottom:0;">Music</h2>
+      </div>
+      <a href="https://open.spotify.com/artist/5U5Fm47sfsTi3TholNuTPm?si=aHCYRA-5S02xQfwj1Gyi-A" target="_blank" class="spotify-follow-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        Follow on Spotify
+      </a>
+    </div>
+
+    <!-- Featured Video -->
+    <div class="featured-video-label" style="margin-bottom: 1.5rem;">
+      <span class="featured-video-title">Singles</span>
+    </div>
+
+    <div class="music-grid">
+      <div class="album-card reveal">
+        <div class="album-art" id="track-1-art" onclick="toggleSpotify('track-1', this)">
+          <div class="album-art-flipper">
+            <div class="album-art-front">
+              <div class="album-art-inner a1" style="background-image:url('images/album-in-disguise.jpg');background-size:cover;background-position:center;"></div>
+              <div class="album-overlay">
+                <button class="play-btn" aria-label="Play"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="5,2 16,9 5,16" fill="rgba(255,255,255,0.95)"/></svg></button>
+            </div>
+            </div>
+            <div class="album-art-back">
+              <button class="album-art-close" id="track-1-close" aria-label="Close player">&#x2715;</button>
+              <iframe data-src="https://open.spotify.com/embed/track/1TNWZkiMk7mK4ECMgnkMXA?utm_source=generator&theme=0&autoplay=1" src="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+        <div class="album-info">
+          <div class="album-title">In Disguise</div>
+          <div class="album-meta">2026 · Single
+          <div class="stream-links">
+            <a href="https://open.spotify.com/track/1TNWZkiMk7mK4ECMgnkMXA" target="_blank" class="stream-btn spotify"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg> Spotify</a>
+            <a href="https://music.apple.com/us/album/in-disguise-single/1860442864" target="_blank" class="stream-btn apple"><svg viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg> Apple</a>
+            <a href="https://music.youtube.com/watch?v=oPi6J0VTJu0" target="_blank" class="stream-btn youtube"><svg viewBox="0 0 24 24"><path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 19.104c-3.924 0-7.104-3.18-7.104-7.104S8.076 4.896 12 4.896s7.104 3.18 7.104 7.104-3.18 7.104-7.104 7.104zm0-13.332c-3.432 0-6.228 2.796-6.228 6.228S8.568 18.228 12 18.228s6.228-2.796 6.228-6.228S15.432 5.772 12 5.772zM9.684 15.54V8.46L16.2 12l-6.516 3.54z"/></svg> YouTube</a>
+          </div>
+        </div>
+        </div>
+      </div>
+<div class="album-card reveal">
+        <div class="album-art" id="track-2-art" onclick="toggleSpotify('track-2', this)">
+          <div class="album-art-flipper">
+            <div class="album-art-front">
+              <div class="album-art-inner a2" style="background-image:url('images/album-go-hungry.jpg');background-size:cover;background-position:center;"></div>
+              <div class="album-overlay">
+                <button class="play-btn" aria-label="Play"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="5,2 16,9 5,16" fill="rgba(255,255,255,0.95)"/></svg></button>
+            </div>
+            </div>
+            <div class="album-art-back">
+              <button class="album-art-close" id="track-2-close" aria-label="Close player">&#x2715;</button>
+              <iframe data-src="https://open.spotify.com/embed/track/43fJ6lZC2BBBJF5bANY8vi?utm_source=generator&theme=0&autoplay=1" src="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+        <div class="album-info">
+          <div class="album-title">Go Hungry</div>
+          <div class="album-meta">2024 · Single
+          <div class="stream-links">
+            <a href="https://open.spotify.com/track/43fJ6lZC2BBBJF5bANY8vi" target="_blank" class="stream-btn spotify"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg> Spotify</a>
+            <a href="https://music.apple.com/us/album/go-hungry-single/1752938201" target="_blank" class="stream-btn apple"><svg viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg> Apple</a>
+            <a href="https://music.youtube.com/watch?v=yy21V0x1j98" target="_blank" class="stream-btn youtube"><svg viewBox="0 0 24 24"><path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 19.104c-3.924 0-7.104-3.18-7.104-7.104S8.076 4.896 12 4.896s7.104 3.18 7.104 7.104-3.18 7.104-7.104 7.104zm0-13.332c-3.432 0-6.228 2.796-6.228 6.228S8.568 18.228 12 18.228s6.228-2.796 6.228-6.228S15.432 5.772 12 5.772zM9.684 15.54V8.46L16.2 12l-6.516 3.54z"/></svg> YouTube</a>
+          </div>
+        </div>
+        </div>
+      </div>
+<div class="album-card reveal">
+        <div class="album-art" id="track-3-art" onclick="toggleSpotify('track-3', this)">
+          <div class="album-art-flipper">
+            <div class="album-art-front">
+              <div class="album-art-inner a3" style="background-image:url('images/album-way-you-were-made.png');background-size:cover;background-position:center;"></div>
+              <div class="album-overlay">
+                <button class="play-btn" aria-label="Play"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="5,2 16,9 5,16" fill="rgba(255,255,255,0.95)"/></svg></button>
+            </div>
+            </div>
+            <div class="album-art-back">
+              <button class="album-art-close" id="track-3-close" aria-label="Close player">&#x2715;</button>
+              <iframe data-src="https://open.spotify.com/embed/track/6mDytj7SyVZoTyIHufw8UY?utm_source=generator&theme=0&autoplay=1" src="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+        <div class="album-info">
+          <div class="album-title">Way You Were Made</div>
+          <div class="album-meta">2023 · Single
+          <div class="stream-links">
+            <a href="https://open.spotify.com/track/6mDytj7SyVZoTyIHufw8UY" target="_blank" class="stream-btn spotify"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg> Spotify</a>
+            <a href="https://music.apple.com/us/album/way-you-were-made-single/1710515841" target="_blank" class="stream-btn apple"><svg viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg> Apple</a>
+            <a href="https://music.youtube.com/watch?v=Wn9e8Sm4l3A" target="_blank" class="stream-btn youtube"><svg viewBox="0 0 24 24"><path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 19.104c-3.924 0-7.104-3.18-7.104-7.104S8.076 4.896 12 4.896s7.104 3.18 7.104 7.104-3.18 7.104-7.104 7.104zm0-13.332c-3.432 0-6.228 2.796-6.228 6.228S8.568 18.228 12 18.228s6.228-2.796 6.228-6.228S15.432 5.772 12 5.772zM9.684 15.54V8.46L16.2 12l-6.516 3.54z"/></svg> YouTube</a>
+          </div>
+        </div>
+        </div>
+      </div>
+<div class="album-card reveal">
+        <div class="album-art" id="track-4-art" onclick="toggleSpotify('track-4', this)">
+          <div class="album-art-flipper">
+            <div class="album-art-front">
+              <div class="album-art-inner a4" style="background-image:url('images/album-fly.png');background-size:cover;background-position:center;"></div>
+              <div class="album-overlay">
+                <button class="play-btn" aria-label="Play"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="5,2 16,9 5,16" fill="rgba(255,255,255,0.95)"/></svg></button>
+            </div>
+            </div>
+            <div class="album-art-back">
+              <button class="album-art-close" id="track-4-close" aria-label="Close player">&#x2715;</button>
+              <iframe data-src="https://open.spotify.com/embed/track/44d7DebnOfrXQugPwIrq29?utm_source=generator&theme=0&autoplay=1" src="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+        <div class="album-info">
+          <div class="album-title">Fly</div>
+          <div class="album-meta">2023 · Single
+          <div class="stream-links">
+            <a href="https://open.spotify.com/track/44d7DebnOfrXQugPwIrq29" target="_blank" class="stream-btn spotify"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg> Spotify</a>
+            <a href="https://music.apple.com/us/album/fly-single/1675178833" target="_blank" class="stream-btn apple"><svg viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg> Apple</a>
+            <a href="https://music.youtube.com/watch?v=zj9WQLfGVBg" target="_blank" class="stream-btn youtube"><svg viewBox="0 0 24 24"><path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 19.104c-3.924 0-7.104-3.18-7.104-7.104S8.076 4.896 12 4.896s7.104 3.18 7.104 7.104-3.18 7.104-7.104 7.104zm0-13.332c-3.432 0-6.228 2.796-6.228 6.228S8.568 18.228 12 18.228s6.228-2.796 6.228-6.228S15.432 5.772 12 5.772zM9.684 15.54V8.46L16.2 12l-6.516 3.54z"/></svg> YouTube</a>
+          </div>
+        </div>
+        </div>
+      </div>
+</div>
+
+    <div class="featured-video reveal" style="margin-top: 3.5rem;">
+      <div class="featured-video-label">
+        <span class="featured-video-title">Featured Music Video</span>
+      </div>
+      <div class="featured-video-embed">
+        <iframe src="https://www.youtube.com/embed/z89jX6VKUgM?si=Kgmeq-CiKWULx-dJ" title="Jaden Money — Latest Music Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </div>
+      </div>
+  </section>
+  <section id="social">
+    <div class="section-inner">
+      <div class="section-label reveal">Find Me Online</div>
+      <h2 class="section-title reveal">Social</h2>
+      <div class="tiktok-callout reveal">
+        <div class="tiktok-live-badge">LIVE</div>
+        <div class="tiktok-callout-text">
+          <h3>Catch me live on TikTok</h3>
+          <p>Taking requests, playing covers, and debuting new music. Join the session.</p>
+        </div>
+        <a href="https://www.tiktok.com/@jadenmoney_" target="_blank" class="tiktok-follow-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.16 8.16 0 004.77 1.52V6.75a4.85 4.85 0 01-1-.06z"/></svg>
+          Follow @jadenmoney_
+        </a>
+      </div>
+
+      <div class="social-platforms reveal">
+        <a href="https://www.instagram.com/jadenmoney_" target="_blank" class="social-platform-link">
+          <div class="social-platform-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </div>
+          <div class="social-platform-info">
+            <span class="social-platform-name">Instagram</span>
+            <span class="social-platform-handle">@jadenmoney_</span>
+            <span class="social-platform-desc">Covers & music updates</span>
+          </div>
+        </a>
+
+        <a href="https://www.youtube.com/@jadenmoneymusic/featured" target="_blank" class="social-platform-link">
+          <div class="social-platform-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </div>
+          <div class="social-platform-info">
+            <span class="social-platform-name">YouTube</span>
+            <span class="social-platform-handle">@jadenmoneymusic</span>
+            <span class="social-platform-desc">Covers & music videos</span>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/Jadenmoneymusic" target="_blank" class="social-platform-link">
+          <div class="social-platform-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </div>
+          <div class="social-platform-info">
+            <span class="social-platform-name">Facebook</span>
+            <span class="social-platform-handle">Jaden Money Music</span>
+            <span class="social-platform-desc">Event updates & shows</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- INNER CIRCLE -->
+  <section id="inner-circle">
+    <div class="inner-circle-bg"></div>
+    <div class="section-inner">
+      <div class="inner-circle-inner reveal">
+        <div class="inner-circle-badge">TikTok Superfan</div>
+        <h2 class="inner-circle-title">Join the Inner Circle</h2>
+        <p class="inner-circle-sub">Support my music and hang out during subscriber-only livestreams featuring acoustic sets, song requests, and unreleased songs.</p>
+        <div class="inner-circle-perks-label">Superfan Perks</div>
+        <div class="inner-circle-perks">
+          <div class="inner-circle-perk" onclick="openPerkModal('🎵','Song Requests','When the chat starts filling up with song requests, it can get hard to keep up with everything coming in. Superfan requests stand out, so I\'m able to spot them first when deciding what to play next.\n\nThat means there\'s a much better chance your request makes it into the setlist during the stream.')">
+            <div class="inner-circle-perk-icon">🎵</div>
+            <div class="inner-circle-perk-title">Song Requests</div>
+            <div class="inner-circle-perk-desc">Priority song requests during every live stream.</div>
+          </div>
+          <div class="inner-circle-perk" onclick="openPerkModal('🎙️','Live Shoutouts','During my livestreams, I always take time to recognize the people who help support the music. Superfans get personal shoutouts and thank-yous during the show as a way of showing my appreciation.\n\nIt\'s my way of making sure the Inner Circle gets recognized.')">
+            <div class="inner-circle-perk-icon">🎙️</div>
+            <div class="inner-circle-perk-title">Live Shoutouts</div>
+            <div class="inner-circle-perk-desc">Get shouted out by name during live sessions.</div>
+          </div>
+          <div class="inner-circle-perk" onclick="openPerkModal('🎭','Custom Sticker','When you\'re chatting during the livestream, your custom Superfan badge appears next to your name in the comments. It\'s a fun way to stand out in the chat and show that you\'re part of the Inner Circle.\n\nOther viewers can instantly see you\'re a Superfan supporting the stream.')">
+            <div class="inner-circle-perk-icon">🎭</div>
+            <div class="inner-circle-perk-title">Custom Sticker</div>
+            <div class="inner-circle-perk-desc">Your own personalized comment sticker with your name and icon.</div>
+          </div>
+          <div class="inner-circle-perk" onclick="openPerkModal('💬','DM Priority','After streams, I usually spend time catching up on messages and comments from the community. Superfan messages and comments are the ones I check first when I\'m responding and interacting with fans.\n\nIt helps me make sure I stay connected with the people supporting the music.')">
+            <div class="inner-circle-perk-icon">💬</div>
+            <div class="inner-circle-perk-title">DM Priority</div>
+            <div class="inner-circle-perk-desc">Direct messages and comments get prioritized replies.</div>
+          </div>
+          <div class="inner-circle-perk" onclick="openPerkModal('🎤','Pick the Topic','Sometimes before a stream or during the session, I\'ll ask Superfans what they\'d like to hear or talk about next. That could mean helping choose the theme of a stream, the kind of songs I play, or topics we dive into.\n\nIt\'s a way for the Inner Circle to help shape what happens during future livestreams.')">
+            <div class="inner-circle-perk-icon">🎤</div>
+            <div class="inner-circle-perk-title">Pick the Topic</div>
+            <div class="inner-circle-perk-desc">Vote on what the next live session is about.</div>
+          </div>
+          <div class="inner-circle-perk" onclick="openPerkModal('👥','Multi-Guest Access','When I open the livestream for guests to join, requests can come in quickly. Superfans move to the front of the request queue, which means you\'ll have a much better chance of joining the stream and interacting live.\n\nIt\'s one of the most fun ways to jump into the show and be part of the moment.')">
+            <div class="inner-circle-perk-icon">👥</div>
+            <div class="inner-circle-perk-title">Multi-Guest Access</div>
+            <div class="inner-circle-perk-desc">Priority access to multi-guest live stream requests.</div>
+          </div>
+        </div>
+        <p class="inner-circle-support-note">Your support helps fund the music, the gear, and everything that keeps this project moving forward.</p>
+        <a href="https://www.tiktok.com/@jadenmoney_" target="_blank" class="superfan-callout" style="display:flex; align-items:center; gap:1rem; margin-top:1.5rem; padding:1.1rem 1.2rem; background:rgba(255,255,255,0.03); backdrop-filter:blur(12px) saturate(150%); -webkit-backdrop-filter:blur(12px) saturate(150%); border:1px solid rgba(255,255,255,0.08); border-left:3px solid var(--gold); border-radius:10px; box-shadow:0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2); text-align:left; text-decoration:none; transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;">
+          <div style="width:38px; height:38px; border-radius:8px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; flex-shrink:0; position:relative;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.16 8.16 0 004.77 1.52V6.75a4.85 4.85 0 01-1-.06z" fill="#69C9D0" style="filter:drop-shadow(1px 1px 0 #EE1D52);"/>
+            </svg>
+          </div>
+          <div class="superfan-callout-text" style="display:flex; flex-direction:column; gap:0.3rem; flex:1; min-width:0; text-align:left;">
+            <span style="font-family:'Barlow Condensed',sans-serif; font-size:0.8rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--white);">How to Become a Superfan</span>
+            <span style="font-size:0.82rem; color:var(--fog); line-height:1.45; font-weight:300;">Superfan subscriptions become available during TikTok livestreams — join a live to access the Subscribe / Superfan option.</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAILING LIST -->
+  <section id="mailing-list">
+    <div class="section-inner">
+      <div class="mailing-list-inner reveal">
+        <div class="mailing-list-text">
+          <div style="margin-bottom:1.25rem;">
+            <span class="merch-badge">Exclusive Acoustic Demo</span>
+          </div>
+          <h3 class="mailing-list-heading">Stay in the Loop</h3>
+          <p class="mailing-list-sub">Sign up and get the link to an exclusive acoustic performance of an unreleased song, plus be the first to know about new releases and merch drops.</p>
+        </div>
+        <div class="mailing-list-form">
+          <!-- ============================================================
+               BREVO MAILING LIST FORM
+               1. Create a free account at https://brevo.com
+               2. Go to Forms > Create a subscription form
+               3. Copy the embed snippet and paste it here, replacing this comment block
+               4. In Brevo, set up an Automation: trigger = "Contact added to list"
+                  Action = send your custom HTML welcome email with the demo link
+               ============================================================ -->
+          <form id="brevo-signup-form" class="mailing-list-native-form" onsubmit="handleMailingSignup(event)">
+            <div class="mailing-list-native-row">
+              <input type="text" id="ml-first-name" name="FIRSTNAME" placeholder="First Name" class="mailing-list-input" required autocomplete="given-name" />
+              <input type="email" id="ml-email" name="EMAIL" placeholder="Email Address" class="mailing-list-input" required autocomplete="email" />
+              <button type="submit" class="mailing-list-btn">
+                <span class="ml-btn-text">Get the Demo</span>
+                <span class="ml-btn-loading" style="display:none;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite;"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                </span>
+              </button>
+            </div>
+            <div id="ml-success" class="mailing-list-success" style="display:none;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              You're in! Check your inbox for the demo link.
+            </div>
+            <div id="ml-error" class="mailing-list-error" style="display:none;"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOUR -->
+  <section id="tour">
+    <div class="tour-bg"></div>
+    <div class="section-inner">
+      <div class="section-label reveal">Live</div>
+      <h2 class="section-title reveal">Upcoming Shows</h2>
+      <p class="section-sub reveal">Catch Jaden live around Wilmington and the surrounding area, and online via TikTok livestream.</p>
+      <div class="tour-list" id="tour-list">
+        <!-- Shows loaded dynamically from Google Calendar -->
+        <div class="tour-loading">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite;"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner">
+    <div class="section-label reveal">Get In Touch</div>
+    <h2 class="section-title reveal">Contact</h2>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3>Let's Connect</h3>
+        <p>Whether it's a booking inquiry, press request, or just want to say hello, fill out the form and I'll be in touch.</p>
+
+        <div class="contact-socials">
+          <a href="https://www.instagram.com/jadenmoney_" target="_blank" class="contact-social-link instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            Instagram
+          </a>
+          <a href="https://www.tiktok.com/@jadenmoney_" target="_blank" class="contact-social-link tiktok">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+            TikTok
+          </a>
+          <a href="https://www.facebook.com/Jadenmoneymusic" target="_blank" class="contact-social-link facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+      <div class="contact-form reveal">
+          <!-- ============================================================
+               FORMSPREE CONTACT FORM
+               1. Create a free account at https://formspree.io
+               2. Create a new form - you will get a form ID like xpwzabcd
+               3. Replace YOUR_FORMSPREE_ID below with your actual ID
+               Free tier: 50 submissions/month. Paid ~10/mo for more.
+               ============================================================ -->
+          <form id="contact-form" action="https://formspree.io/f/xwvzjoed" method="POST" onsubmit="handleContactSubmit(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cf-name">Name</label>
+                <input type="text" id="cf-name" name="name" placeholder="Your name" required autocomplete="name" />
+              </div>
+              <div class="form-group">
+                <label for="cf-email">Email</label>
+                <input type="email" id="cf-email" name="email" placeholder="your@email.com" required autocomplete="email" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cf-subject">Subject</label>
+              <select id="cf-subject" name="subject" required>
+                <option value="" disabled selected>Select a topic</option>
+                <option value="Booking Inquiry">Booking Inquiry</option>
+                <option value="Press / Media">Press / Media</option>
+                <option value="Collaboration">Collaboration</option>
+                <option value="General">General</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cf-message">Message</label>
+              <textarea id="cf-message" name="message" rows="5" placeholder="Tell me more..." required></textarea>
+            </div>
+            <button type="submit" class="btn-primary" id="cf-submit" style="width:100%;justify-content:center;display:flex;align-items:center;gap:0.5rem;">
+              <span id="cf-btn-text">Send Message</span>
+              <span id="cf-btn-loading" style="display:none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite;"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></span>
+            </button>
+            <div id="cf-success" style="display:none;margin-top:1rem;padding:1rem;background:rgba(29,185,84,0.1);border:1px solid rgba(29,185,84,0.3);border-radius:8px;color:#1DB954;font-size:0.9rem;letter-spacing:0.05em;">
+              Message sent! I will be in touch soon.
+            </div>
+            <div id="cf-error" style="display:none;margin-top:1rem;padding:1rem;background:rgba(235,32,61,0.1);border:1px solid rgba(235,32,61,0.3);border-radius:8px;color:var(--rust);font-size:0.9rem;letter-spacing:0.05em;"></div>
+          </form>
+        </div>
+    </div>
+      </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+
+      <!-- Top: back to top -->
+      <button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        Back to Top
+      </button>
+
+      <!-- Main footer grid -->
+      <div class="footer-grid">
+
+        <!-- Col 1: Brand + bio -->
+        <div class="footer-brand">
+          <div class="footer-logo">JADEN <span>MONEY</span></div>
+          <p class="footer-bio">Follow and stream on all platforms to stay up to date with new music, shows, and everything in between.</p>
+          <div class="footer-socials">
+            <a href="https://www.instagram.com/jadenmoney_" target="_blank" class="footer-social-icon instagram" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@jadenmoney_" target="_blank" class="footer-social-icon tiktok" aria-label="TikTok">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+            </a>
+            <a href="https://www.youtube.com/@jadenmoneymusic/featured" target="_blank" class="footer-social-icon youtube" aria-label="YouTube">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/Jadenmoneymusic" target="_blank" class="footer-social-icon facebook" aria-label="Facebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Navigation -->
+        <div class="footer-nav">
+          <div class="footer-col-label">Navigate</div>
+          <a href="#about">About</a>
+          <a href="#music">Music</a>
+          <a href="#social">Social</a>
+          <a href="#inner-circle">Inner Circle</a>
+          <a href="#tour">Shows</a>
+          <a href="#contact">Contact</a>
+        </div>
+
+        <!-- Col 3: Stream -->
+        <div class="footer-stream">
+          <div class="footer-col-label">Stream</div>
+          <a href="https://open.spotify.com/artist/5U5Fm47sfsTi3TholNuTPm?si=aHCYRA-5S02xQfwj1Gyi-A" target="_blank" class="footer-stream-link spotify">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            Spotify
+          </a>
+          <a href="https://music.apple.com/us/artist/jaden-money/1674955100" target="_blank" class="footer-stream-link apple">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+            Apple Music
+          </a>
+          <a href="https://music.youtube.com/channel/UCMW91wRQwOMHJ8mRWR6RTLw?si=66GCROmGM3YEOdJh" target="_blank" class="footer-stream-link youtube-music">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 19.104c-3.924 0-7.104-3.18-7.104-7.104S8.076 4.896 12 4.896s7.104 3.18 7.104 7.104-3.18 7.104-7.104 7.104zm0-13.332c-3.432 0-6.228 2.796-6.228 6.228S8.568 18.228 12 18.228s6.228-2.796 6.228-6.228S15.432 5.772 12 5.772zM9.684 15.54V8.46L16.2 12l-6.516 3.54z"/></svg>
+            YouTube Music
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="footer-bottom">
+        <div class="footer-copy">© <span id="footer-year"></span> Jaden Money. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <a href="#mailing-list">Newsletter</a>
+          <a href="#contact">Contact</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // Hamburger nav toggle
+    const hamburger = document.getElementById('nav-hamburger');
+    const navMenu = document.getElementById('nav-menu');
+
+    if (hamburger && navMenu) {
+      hamburger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        hamburger.classList.toggle('open');
+        navMenu.classList.toggle('open');
+        document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '';
+      });
+
+      // Close on overlay click (clicking outside menu items)
+      navMenu.addEventListener('click', function(e) {
+        if (e.target === navMenu) closeNav();
+      });
+
+      // Close on ESC key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeNav();
+      });
+    }
+
+    function closeNav() {
+      if (hamburger) hamburger.classList.remove('open');
+      if (navMenu) navMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    window.closeNav = closeNav;
+
+    function openPerkModal(icon, title, desc) {
+      document.getElementById('perk-modal-icon').textContent = icon;
+      document.getElementById('perk-modal-title').textContent = title;
+      const descEl = document.getElementById('perk-modal-desc');
+      descEl.innerHTML = desc.split('\n\n').map(p => `<p>${p}</p>`).join('');
+      document.getElementById('perk-modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    window.openPerkModal = openPerkModal;
+
+    function closePerkModal(e) {
+      if (e && e.target !== document.getElementById('perk-modal-overlay')) return;
+      document.getElementById('perk-modal-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    window.closePerkModal = closePerkModal;
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.getElementById('perk-modal-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Wire up close buttons
+    ['track-1','track-2','track-3','track-4'].forEach(trackId => {
+      const closeBtn = document.getElementById(trackId + '-close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const artDiv = document.getElementById(trackId + '-art');
+          artDiv.classList.remove('flipped');
+          const iframe = artDiv.querySelector('iframe');
+          if (iframe) iframe.src = '';
+          const front = artDiv.querySelector('.album-art-front');
+          if (front) front.style.pointerEvents = '';
+          const btn = artDiv.querySelector('.play-btn');
+          const playSVG = '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="5,2 16,9 5,16" fill="rgba(255,255,255,0.95)"/></svg>';
+          if (btn) { btn.classList.remove('playing'); btn.innerHTML = playSVG; }
+        });
+      }
+    });
+
+    // Spotify card flip toggle
+    window.toggleSpotify = function(trackId, el) {
+      const artDiv = document.getElementById(trackId + '-art');
+      const allArt = document.querySelectorAll('.album-art');
+      const allBtns = document.querySelectorAll('.play-btn');
+      const isFlipped = artDiv.classList.contains('flipped');
+
+      const playSVG = '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="5,2 16,9 5,16" fill="rgba(255,255,255,0.95)"/></svg>';
+      const pauseSVG = '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="2" width="4" height="14" rx="1" fill="rgba(255,255,255,0.95)"/><rect x="11" y="2" width="4" height="14" rx="1" fill="rgba(255,255,255,0.95)"/></svg>';
+
+      // Unflip all cards, reset buttons, and stop all iframes except the target
+      allArt.forEach(a => {
+        if (a === artDiv) return;
+        a.classList.remove('flipped');
+        const iframe = a.querySelector('iframe');
+        if (iframe) iframe.src = '';
+        const front = a.querySelector('.album-art-front');
+        if (front) front.style.pointerEvents = '';
+      });
+      allBtns.forEach(b => { b.classList.remove('playing'); b.innerHTML = playSVG; });
+
+      // If this card wasn't already flipped, flip it
+      if (!isFlipped) {
+        artDiv.classList.add('flipped');
+        // Reset any tilt on the parent card
+        const parentCard = artDiv.closest('.album-card');
+        if (parentCard) parentCard.style.transform = '';
+        // Disable pointer events on front so back is fully clickable
+        const front = artDiv.querySelector('.album-art-front');
+        if (front) front.style.pointerEvents = 'none';
+        const btn = artDiv.querySelector('.play-btn');
+        if (btn) { btn.classList.add('playing'); btn.innerHTML = pauseSVG; }
+        const iframe = artDiv.querySelector('iframe');
+        if (iframe) iframe.src = iframe.dataset.src;
+      } else {
+        // Restore front pointer events when unflipping
+        const front = artDiv.querySelector('.album-art-front');
+        if (front) front.style.pointerEvents = '';
+      }
+    }
+
+    // Add to calendar toggle
+    function toggleAtc(id) {
+      const wrap = document.getElementById(id);
+      const isOpen = wrap.classList.contains('open');
+      document.querySelectorAll('.atc-wrap').forEach(w => w.classList.remove('open'));
+      if (!isOpen) wrap.classList.add('open');
+    }
+    window.toggleAtc = toggleAtc;
+
+    // ── Google Calendar Tour Feed ──────────────────────────────────────────
+    (function() {
+      const API_KEY  = 'AIzaSyAwHXxlKL0kW_soP1whdbbtnkJFFbZPrRk';
+      const CAL_ID   = '2ecd41cc6548c0bd8e412d13a159cfe950eb93c9dda03a24fb67ac5d02420a8e@group.calendar.google.com';
+      const list     = document.getElementById('tour-list');
+      if (!list) return;
+
+      const now      = new Date().toISOString();
+      const url      = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}/events`
+                     + `?key=${API_KEY}&orderBy=startTime&singleEvents=true&timeMin=${encodeURIComponent(now)}&maxResults=10`;
+
+      fetch(url)
+        .then(r => r.json())
+        .then(data => {
+          const events = (data.items || []).filter(e => e.status !== 'cancelled');
+          list.innerHTML = '';
+          if (!events.length) { renderEmpty(list); return; }
+
+          events.forEach((event, i) => {
+            const startRaw = event.start.dateTime || event.start.date;
+            const endRaw   = event.end.dateTime   || event.end.date;
+            const startTs  = new Date(startRaw);
+            const endTs    = new Date(endRaw);
+
+            const day       = startTs.getDate();
+            const monthYear = startTs.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            const timeStr   = event.start.dateTime
+                            ? startTs.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).toLowerCase()
+                            : '';
+
+            const title    = event.summary || 'Show';
+            const location = event.location || '';
+
+            // Ticket URL — strip HTML tags Google wraps around URLs in description
+            const desc      = event.description || '';
+            const plainDesc = desc.replace(/<[^>]+>/g, '').trim();
+            const firstLine = plainDesc.split('\n')[0].trim();
+            let ticketUrl   = '';
+            let ticketLabel = 'Tickets';
+            try {
+              new URL(firstLine);
+              ticketUrl   = firstLine;
+              ticketLabel = 'Info';
+            } catch(e) {}
+
+            // Detect TikTok live — title contains "tiktok" or URL is tiktok.com
+            const isTikTok = /tiktok/i.test(title) || /tiktok\.com/i.test(ticketUrl);
+
+            let venue = '', cityLine = '', addressLine = '';
+            if (!isTikTok && location) {
+              if (location.includes('\n')) {
+                const parts = location.split('\n');
+                venue = parts[0].trim();
+                const addrParts = parts[1].split(',').map(s => s.trim());
+                const cityState = addrParts.filter(p => !/^\d{5}/.test(p) && p !== 'United States').slice(-2).join(', ');
+                cityLine = cityState;
+              } else if (location.includes(' · ')) {
+                const parts = location.split(' · ');
+                venue    = parts[0].trim();
+                cityLine = parts.slice(1).join(' · ').trim();
+              } else {
+                const parts = location.split(',').map(s => s.trim());
+                venue       = parts[0];
+                addressLine = parts.slice(1).join(', ');
+              }
+            }
+
+            // Calendar link helpers — preserve original timezone offset, don't convert to UTC
+            const fmtLocal = (isoStr) => {
+              const d = new Date(isoStr);
+              const tzOffset = -d.getTimezoneOffset();
+              const offsetSign = tzOffset >= 0 ? '+' : '-';
+              const pad = n => String(Math.floor(Math.abs(n))).padStart(2, '0');
+              const raw = isoStr.replace(/[-:]/g, '').replace(/\.\d+/, '').replace(/[+-]\d{4}$/, '').replace('T', 'T');
+              const clean = isoStr.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).*/, '$1$2$3T$4$5$6');
+              return clean;
+            };
+            const gcalStart = fmtLocal(event.start.dateTime || event.start.date);
+            const gcalEnd   = fmtLocal(event.end.dateTime   || event.end.date);
+
+            const locationForCal = isTikTok ? 'TikTok Live (@jadenmoney_)' : location.replace('\n', ' ');
+            const calDetails = isTikTok
+              ? 'Watch Jaden Money live on TikTok: https://www.tiktok.com/@jadenmoney_'
+              : 'Jaden Money live' + (venue ? ' at ' + venue : '');
+
+            const gcalUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+                          + '&text='     + encodeURIComponent(title)
+                          + '&dates='    + gcalStart + '/' + gcalEnd
+                          + '&location=' + encodeURIComponent(locationForCal)
+                          + '&details='  + encodeURIComponent(calDetails);
+
+            const icalData = [
+              'BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT',
+              'DTSTART:' + gcalStart,
+              'DTEND:'   + gcalEnd,
+              'SUMMARY:' + title,
+              'LOCATION:' + locationForCal,
+              'DESCRIPTION:' + calDetails,
+              'END:VEVENT','END:VCALENDAR'
+            ].join('\n');
+            const icalHref = 'data:text/calendar;charset=utf8,' + encodeURIComponent(icalData);
+            const icalSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            const atcId    = 'atc-' + (i + 1);
+
+            const isLiveNow = isTikTok && Date.now() >= startTs.getTime() && Date.now() <= endTs.getTime();
+
+            const tiktokIcon = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-1px"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.16 8.16 0 004.77 1.52V6.75a4.85 4.85 0 01-1-.06z"/></svg>`;
+
+            const item = document.createElement('div');
+            item.className = 'tour-item reveal' + (isTikTok ? ' tour-item--tiktok' : '');
+
+            if (isTikTok) {
+              item.innerHTML = `
+                <div class="tour-date">${day}<span>${monthYear}</span></div>
+                <div>
+                  <div class="tour-venue">${title}</div>
+                  <div class="tour-city tour-city--tiktok">${tiktokIcon} TikTok Livestream${timeStr ? ' · ' + timeStr : ''}</div>
+                </div>
+                <div class="tour-actions">
+                  <a href="https://www.tiktok.com/@jadenmoney_" target="_blank" class="tour-ticket tour-ticket--tiktok${isLiveNow ? ' tour-ticket--live' : ''}">${tiktokIcon} Watch Live</a>
+                  <div class="atc-wrap" id="${atcId}">
+                    <button class="atc-btn" onclick="toggleAtc('${atcId}')">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                      Add to Cal
+                    </button>
+                    <div class="atc-dropdown">
+                      <a href="${gcalUrl}" target="_blank">Google Calendar</a>
+                      <a href="${icalHref}" download="${icalSlug}.ics">Apple / Outlook</a>
+                    </div>
+                  </div>
+                </div>`;
+            } else {
+              item.innerHTML = `
+                <div class="tour-date">${day}<span>${monthYear}</span></div>
+                <div>
+                  <div class="tour-venue">${title}</div>
+                  ${venue && cityLine ? `<div class="tour-city">${venue} · ${cityLine}</div>` : ''}
+                  ${!cityLine && addressLine ? `<div class="tour-city">${addressLine}</div>` : ''}
+                  ${timeStr ? `<div class="tour-city">${timeStr}</div>` : ''}
+                </div>
+                <div class="tour-actions">
+                  ${ticketUrl ? `<a href="${ticketUrl}" target="_blank" class="tour-ticket">${ticketLabel}</a>` : ''}
+                  <div class="atc-wrap" id="${atcId}">
+                    <button class="atc-btn" onclick="toggleAtc('${atcId}')">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                      Add to Cal
+                    </button>
+                    <div class="atc-dropdown">
+                      <a href="${gcalUrl}" target="_blank">Google Calendar</a>
+                      <a href="${icalHref}" download="${icalSlug}.ics">Apple / Outlook</a>
+                    </div>
+                  </div>
+                </div>`;
+            }
+            list.appendChild(item);
+
+            // Trigger reveal animation
+            setTimeout(() => item.classList.add('visible'), 50 * i);
+          });
+        })
+        .catch(() => { list.innerHTML = ''; renderEmpty(list); });
+
+      function renderEmpty(container) {
+        container.innerHTML = `
+          <div class="tour-empty" style="display:flex;">
+            <div class="tour-empty-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </div>
+            <div class="tour-empty-text">
+              <h3>No upcoming shows right now</h3>
+              <p>New dates are on the way. Be the first to know when they drop.</p>
+            </div>
+            <div class="tour-empty-actions">
+              <a href="#mailing-list" class="tour-empty-btn-primary">Get Notified</a>
+              <a href="https://www.facebook.com/Jadenmoneymusic" target="_blank" class="tour-empty-btn-secondary">Follow on Facebook</a>
+            </div>
+          </div>`;
+      }
+    })();
+    // ── End Google Calendar Feed ───────────────────────────────────────────
+
+    // Auto-update copyright year
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+    // Close atc dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.atc-wrap')) {
+        document.querySelectorAll('.atc-wrap').forEach(w => w.classList.remove('open'));
+      }
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(r => observer.observe(r));
+
+    // ── PARALLAX HERO ─────────────────────────────────────
+    const heroBg = document.querySelector('.hero-bg');
+    function updateParallax() {
+      if (!heroBg) return;
+      const scrollY = window.scrollY;
+      const heroHeight = document.getElementById('hero').offsetHeight;
+      const progress = Math.min(scrollY / heroHeight, 1);
+      const scale = 1 + progress * 0.15;
+      heroBg.style.transform = `scale(${scale})`;
+    }
+    window.addEventListener('scroll', updateParallax, { passive: true });
+
+    // ── SECTION BACKGROUND TINTS ──────────────────────────
+    const sectionTints = {
+      'hero':    'rgba(10,10,10,1)',
+      'about':   'rgba(12,10,10,1)',
+      'music':   'rgba(10,10,14,1)',
+      'tour':    'rgba(14,10,10,1)',
+      'contact': 'rgba(10,12,10,1)',
+    };
+
+    const sections = document.querySelectorAll('section[id]');
+    const observer2 = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          if (sectionTints[id]) {
+            document.body.style.background = sectionTints[id];
+          }
+        }
+      });
+    }, { threshold: 0.3 });
+    sections.forEach(s => observer2.observe(s));
+
+
+    // ── MAILING LIST FORM HANDLER ─────────────────────────
+    // Replace this fetch logic with your Brevo API key + list ID
+    // once your Brevo account is set up. See instructions in the form HTML comment above.
+    async function handleMailingSignup(e) {
+      e.preventDefault();
+      const form = e.target;
+      const btnText = form.querySelector('.ml-btn-text');
+      const btnLoading = form.querySelector('.ml-btn-loading');
+      const successEl = document.getElementById('ml-success');
+      const errorEl = document.getElementById('ml-error');
+      const email = document.getElementById('ml-email').value;
+      const firstName = document.getElementById('ml-first-name').value;
+
+      // Show loading state
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline-flex';
+      successEl.style.display = 'none';
+      errorEl.style.display = 'none';
+
+      try {
+        // ── Brevo via Cloudflare Worker (API key secured server-side) ──
+        const res = await fetch('https://jaden-brevo-signup.kyle38120.workers.dev', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, firstName })
+        });
+        if (!res.ok) throw new Error('Signup failed');
+
+        form.reset();
+        successEl.style.display = 'flex';
+      } catch (err) {
+        errorEl.textContent = 'Something went wrong. Please try again.';
+        errorEl.style.display = 'block';
+      } finally {
+        btnText.style.display = 'inline';
+        btnLoading.style.display = 'none';
+      }
+    }
+
+    // ── CONTACT FORM HANDLER ──────────────────────────────
+    async function handleContactSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const btnText = document.getElementById('cf-btn-text');
+      const btnLoading = document.getElementById('cf-btn-loading');
+      const successEl = document.getElementById('cf-success');
+      const errorEl = document.getElementById('cf-error');
+
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline-flex';
+      successEl.style.display = 'none';
+      errorEl.style.display = 'none';
+
+      try {
+        const data = new FormData(form);
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!res.ok) throw new Error('Submit failed');
+        form.reset();
+        successEl.style.display = 'block';
+      } catch (err) {
+        errorEl.textContent = 'Something went wrong. Please try again or email directly.';
+        errorEl.style.display = 'block';
+      } finally {
+        btnText.style.display = 'inline';
+        btnLoading.style.display = 'none';
+      }
+    }
+
+  }); // end DOMContentLoaded
+
+  // Parallax for tour section background
+  (function() {
+    const tourBg = document.querySelector('#tour .tour-bg');
+    const tourSection = document.getElementById('tour');
+    if (!tourBg || !tourSection) return;
+
+    function updateParallax() {
+      const rect = tourSection.getBoundingClientRect();
+      const windowH = window.innerHeight;
+      // Only run when section is visible
+      if (rect.bottom < 0 || rect.top > windowH) return;
+      // progress: 0 = section just entering bottom of viewport, 1 = section leaving top
+      const progress = 1 - (rect.bottom / (windowH + rect.height));
+      // Start high (face above frame), drift down as you scroll — face reveals on entry
+      const offset = (progress - 0.5) * -120 + 80;
+      tourBg.style.transform = `translateY(${offset}px)`;
+    }
+
+    window.addEventListener('scroll', updateParallax, { passive: true });
+    window.addEventListener('resize', updateParallax, { passive: true });
+    updateParallax();
+  })();
+
+  // Parallax for inner circle background
+  (function() {
+    const bg = document.querySelector('.inner-circle-bg');
+    const section = document.getElementById('inner-circle');
+    if (!bg || !section) return;
+
+    function updateParallax() {
+      const rect = section.getBoundingClientRect();
+      const windowH = window.innerHeight;
+      if (rect.bottom < 0 || rect.top > windowH) return;
+      const progress = 1 - (rect.bottom / (windowH + rect.height));
+      const isMobile = window.innerWidth <= 680;
+      const offset = (progress - 0.5) * (isMobile ? -120 : -180);
+      const scale = isMobile ? 0.7 : 1;
+      bg.style.transform = `translateY(${offset}px) scale(${scale})`;
+    }
+
+    window.addEventListener('scroll', updateParallax, { passive: true });
+    window.addEventListener('resize', updateParallax, { passive: true });
+    updateParallax();
+  })();
+  </script>
+  <!-- PERK MODAL -->
+  <div class="perk-modal-overlay" id="perk-modal-overlay" onclick="closePerkModal(event)">
+    <div class="perk-modal">
+      <button class="perk-modal-close" onclick="closePerkModal()" aria-label="Close">&#x2715;</button>
+      <div class="perk-modal-icon" id="perk-modal-icon"></div>
+      <div class="perk-modal-title" id="perk-modal-title"></div>
+      <div class="perk-modal-desc" id="perk-modal-desc"></div>
+    </div>
+  </div>
+
+</body>
+</html>
