@@ -23,7 +23,7 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: auto; }
 
     body {
       background: var(--black);
@@ -4029,7 +4029,7 @@
                4. In Brevo, set up an Automation: trigger = "Contact added to list"
                   Action = send your custom HTML welcome email with the demo link
                ============================================================ -->
-          <form id="brevo-signup-form" class="mailing-list-native-form" onsubmit="handleMailingSignup(event)">
+          <form id="brevo-signup-form" class="mailing-list-native-form">
             <div class="mailing-list-native-row">
               <input type="text" id="ml-first-name" name="FIRSTNAME" placeholder="First Name" class="mailing-list-input" required autocomplete="given-name" />
               <input type="email" id="ml-email" name="EMAIL" placeholder="Email Address" class="mailing-list-input" required autocomplete="email" />
@@ -4217,6 +4217,27 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', function() {
+
+    // Wire up mailing list form (avoids inline onsubmit race with async)
+    const mlForm = document.getElementById('brevo-signup-form');
+    if (mlForm) {
+      mlForm.addEventListener('submit', handleMailingSignup);
+    }
+
+    // Smooth scroll for in-page anchor links only (not global, to avoid
+    // the browser smooth-scrolling on form focus changes)
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', function(ev) {
+        const id = this.getAttribute('href');
+        if (id.length > 1) {
+          const target = document.querySelector(id);
+          if (target) {
+            ev.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
 
     // Hamburger nav toggle
     const hamburger = document.getElementById('nav-hamburger');
@@ -4582,8 +4603,9 @@
     // ── MAILING LIST FORM HANDLER ─────────────────────────
     // Replace this fetch logic with your Brevo API key + list ID
     // once your Brevo account is set up. See instructions in the form HTML comment above.
-    async function handleMailingSignup(e) {
+    function handleMailingSignup(e) {
       e.preventDefault();
+      e.stopPropagation();
       const form = e.target;
       const btnText = form.querySelector('.ml-btn-text');
       const btnLoading = form.querySelector('.ml-btn-loading');
@@ -4598,24 +4620,29 @@
       successEl.style.display = 'none';
       errorEl.style.display = 'none';
 
-      try {
-        // ── Brevo via Cloudflare Worker (API key secured server-side) ──
-        const res = await fetch('https://jaden-brevo-signup.kyle38120.workers.dev', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, firstName })
-        });
-        if (!res.ok) throw new Error('Signup failed');
+      // Run the async submission separately so preventDefault stays synchronous
+      (async () => {
+        try {
+          // ── Brevo via Cloudflare Worker (API key secured server-side) ──
+          const res = await fetch('https://jaden-brevo-signup.kyle38120.workers.dev', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, firstName })
+          });
+          if (!res.ok) throw new Error('Signup failed');
 
-        form.reset();
-        successEl.style.display = 'flex';
-      } catch (err) {
-        errorEl.textContent = 'Something went wrong. Please try again.';
-        errorEl.style.display = 'block';
-      } finally {
-        btnText.style.display = 'inline';
-        btnLoading.style.display = 'none';
-      }
+          form.reset();
+          successEl.style.display = 'flex';
+        } catch (err) {
+          errorEl.textContent = 'Something went wrong. Please try again.';
+          errorEl.style.display = 'block';
+        } finally {
+          btnText.style.display = 'inline';
+          btnLoading.style.display = 'none';
+        }
+      })();
+
+      return false;
     }
 
     // ── CONTACT FORM HANDLER ──────────────────────────────
