@@ -3,8 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jaden Money — Official Site</title>
+  <title>Jaden Money | Official Site</title>
+  <meta name="description" content="Jaden Money is a Wilmington, NC alt-rock artist blending grungy guitars with dark, emotionally raw lyricism. Stream her latest single Water From the Earth, watch the music video, catch her live, and book a show." />
+  <meta name="author" content="Jaden Money" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="canonical" href="https://jadenmoney.com/" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="images/Freaky-Franky-Icon-300x300.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Jaden Money" />
+  <meta property="og:title" content="Jaden Money | Alt-Rock from Wilmington, NC" />
+  <meta property="og:description" content="Grungy guitars, dark and emotionally raw lyricism. Stream the latest single Water From the Earth, watch the video, and book a show." />
+  <meta property="og:url" content="https://jadenmoney.com/" />
+  <meta property="og:image" content="https://jadenmoney.com/images/hero-live.jpg" />
+  <meta property="og:image:alt" content="Jaden Money" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Jaden Money | Alt-Rock from Wilmington, NC" />
+  <meta name="twitter:description" content="Grungy guitars, dark and emotionally raw lyricism. Stream the latest single Water From the Earth, watch the video, and book a show." />
+  <meta name="twitter:image" content="https://jadenmoney.com/images/hero-live.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "Jaden Money",
+    "genre": "Alternative Rock",
+    "url": "https://jadenmoney.com/",
+    "image": "https://jadenmoney.com/images/hero-live.jpg",
+    "description": "Wilmington, NC alt-rock artist blending grungy guitars with dark, emotionally raw lyricism.",
+    "foundingLocation": { "@type": "Place", "name": "Wilmington, North Carolina" },
+    "sameAs": [
+      "https://open.spotify.com/artist/5U5Fm47sfsTi3TholNuTPm",
+      "https://music.apple.com/us/artist/jaden-money/1674955100",
+      "https://music.youtube.com/channel/UCMW91wRQwOMHJ8mRWR6RTLw",
+      "https://www.instagram.com/jadenmoney_",
+      "https://www.tiktok.com/@jadenmoney_",
+      "https://www.facebook.com/Jadenmoneymusic"
+    ]
+  }
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600&family=Special+Elite&display=swap" rel="stylesheet"/>
   <style>
 
@@ -129,7 +168,7 @@
     }
 
     .nav-inner {
-      max-width: 1460px;
+      max-width: 1280px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
@@ -142,6 +181,8 @@
       letter-spacing: 0.2em;
       color: var(--white);
       text-decoration: none;
+      position: relative;
+      z-index: 200;
     }
 
     .nav-logo span { color: var(--rust); }
@@ -178,19 +219,6 @@
     /* ─── NAV PLATFORM BUTTONS (global) ────────────────── */
     .nav-links-group {
       display: contents;
-    }
-    .nav-menu.open::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("images/nav-menu-grain-texture.jpg");
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
-      opacity: 0.35;
-      pointer-events: none;
-      z-index: 1;
-      mix-blend-mode: overlay;
     }
     .nav-menu.open::after {
       content: '';
@@ -254,11 +282,11 @@
     /* ─── HERO ────────────────────────────────────────── */
     #hero {
       position: relative;
-      height: 80vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 0 2rem;
+      padding: 8rem 2rem 3rem;
       overflow: hidden;
     }
 
@@ -268,9 +296,14 @@
       background:
         linear-gradient(to right, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.75) 35%, rgba(10,10,10,0.0) 55%, rgba(10,10,10,0.0) 75%, rgba(10,10,10,0.55) 100%),
         linear-gradient(to top, rgba(10,10,10,0.75) 0%, transparent 45%),
-        url('images/hero-jaden.jpg') 66% 20%/cover no-repeat;
+        url('images/hero-live.jpg') 12% 26%/cover no-repeat;
       will-change: transform;
       transform-origin: center center;
+    }
+
+    /* On narrower screens the wide photo crops hard; recenter on her so she stays in frame */
+    @media (max-width: 1024px) {
+      .hero-bg { background-position: 45% 20%; }
     }
 
 
@@ -284,11 +317,12 @@
       margin-bottom: 1rem;
       opacity: 0;
       animation: fadeUp 0.8s 0.2s forwards;
+      text-shadow: 0 1px 14px rgba(0,0,0,0.85), 0 0 4px rgba(0,0,0,0.7);
     }
 
     .hero-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(4rem, 11vw, 10rem);
+      font-size: clamp(3.5rem, 8vw, 7rem);
       line-height: 0.88;
       color: var(--white);
       position: relative;
@@ -302,7 +336,7 @@
       display: block;
       margin-left: clamp(1rem, 5vw, 6rem);
       color: transparent;
-      -webkit-text-stroke: 4px rgba(200,191,176,0.4);
+      -webkit-text-stroke: 4px rgba(200,191,176,0.6);
     }
 
     .hero-sub {
@@ -318,8 +352,59 @@
       animation: fadeUp 0.9s 0.6s forwards;
     }
 
+    .hero-release {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: 440px;
+      padding: 0.85rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      backdrop-filter: blur(12px) saturate(160%);
+      -webkit-backdrop-filter: blur(12px) saturate(160%);
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.7s forwards;
+    }
+
+    .hero-release-cover {
+      width: 76px;
+      height: 76px;
+      border-radius: 6px;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .hero-release-info { flex: 1; min-width: 0; }
+
+    .hero-release-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .hero-release-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      line-height: 1.05;
+      margin: 2px 0 9px;
+    }
+
+    .hero-release-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .hero-release-actions .stream-btn { flex: 0 0 auto; padding: 0.4rem 0.75rem; }
+    .hero-release-actions .stream-btn svg { width: 13px; height: 13px; }
+
     .hero-cta {
-      margin-top: 2.5rem;
+      margin-top: 1.75rem;
       display: flex;
       gap: 1.2rem;
       opacity: 0;
@@ -423,7 +508,7 @@
     }
 
     .section-inner {
-      max-width: 1460px;
+      max-width: 1280px;
       margin: 0 auto;
       width: 100%;
     }
@@ -548,7 +633,7 @@
     }
 
     .about-quote {
-      font-family: 'Special Elite', cursive;
+      font-family: 'Special Elite', 'Courier New', monospace;
       font-size: 1.1rem;
       color: var(--bone);
       border-left: 2px solid var(--rust);
@@ -735,9 +820,9 @@
     #tour .tour-bg {
       position: absolute;
       inset: -25%;
-      background-image: url('images/tour-background.jpg');
+      background-image: url('images/upcomming-shows.jpg');
       background-size: cover;
-      background-position: center 8%;
+      background-position: center 18%;
       opacity: 0.22;
       z-index: 0;
       will-change: transform;
@@ -1043,6 +1128,15 @@
       flex-direction: column;
       gap: 0.4rem;
       margin-bottom: 1rem;
+      min-width: 0;
+    }
+
+    /* Let contact inputs fill and shrink within their tracks (prevents overflow/clipping) */
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+      width: 100%;
+      min-width: 0;
     }
 
     label {
@@ -2559,7 +2653,7 @@
     }
 
     .footer-inner {
-      max-width: 1460px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 0 2rem;
     }
@@ -3117,10 +3211,10 @@
       transition: all 0.35s ease;
     }
 
-    /* Tablet — 481px to 1024px */
+    /* Desktop — one clean row of singles (5 as of Water From the Earth) */
     @media (min-width: 1025px) {
       .music-grid {
-        grid-template-columns: repeat(4, 1fr) !important;
+        grid-template-columns: repeat(5, 1fr) !important;
       }
     }
 
@@ -3137,9 +3231,7 @@
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(10, 10, 10, 0.85);
-        backdrop-filter: blur(32px) saturate(180%);
-        -webkit-backdrop-filter: blur(32px) saturate(180%);
+        background: var(--black);
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
@@ -3190,8 +3282,9 @@
         letter-spacing: 0.25em;
       }
       #hero {
-        padding: 0 2.5rem 5rem;
-        height: 100vh;
+        padding: 7rem 2.5rem 3rem;
+        min-height: 100vh;
+        height: auto;
       }
 
       /* Sections */
@@ -3247,6 +3340,10 @@
         gap: 3rem;
         padding: 2.5rem;
       }
+      /* Stack name/email so neither field gets squeezed in the narrow form column */
+      .form-row {
+        grid-template-columns: 1fr;
+      }
 
       /* Social */
       .social-platforms {
@@ -3268,7 +3365,7 @@
 
     /* Mobile — up to 480px */
     /* ── Switch to 1-col when 2-col cards can no longer fit iframe ── */
-    @media (max-width: 900px) {
+    @media (max-width: 1024px) {
       .mailing-list-inner {
         flex-direction: column;
         align-items: stretch;
@@ -3313,6 +3410,15 @@
       .mailing-list-form .ff-btn-submit {
         width: 100% !important;
         box-sizing: border-box !important;
+      }
+      /* Tour empty-state: stack so the wide action buttons don't starve the text */
+      .tour-empty {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.2rem;
+      }
+      .tour-empty-actions {
+        width: 100%;
       }
     }
 
@@ -3362,9 +3468,7 @@
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(10, 10, 10, 0.85);
-        backdrop-filter: blur(32px) saturate(180%);
-        -webkit-backdrop-filter: blur(32px) saturate(180%);
+        background: var(--black);
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
@@ -3408,14 +3512,15 @@
 
       /* Hero */
       #hero {
-        padding: 0 1.2rem 3rem;
-        height: 100vh;
+        padding: 6rem 1.2rem 2.5rem;
+        min-height: 100vh;
+        height: auto;
       }
       .hero-title {
-        font-size: clamp(5rem, 18vw, 7rem);
+        font-size: clamp(3.75rem, 15vw, 5.5rem);
       }
       .hero-title .offset {
-        -webkit-text-stroke: 2px rgba(200,191,176,0.4);
+        -webkit-text-stroke: 2px rgba(200,191,176,0.55);
       }
       .hero-eyebrow {
         text-shadow: 0 1px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.8);
@@ -3653,6 +3758,157 @@
         margin-top: 0.25rem;
       }
     }
+    /* ─── LIVE / FOR VENUES ─────────────────────────────── */
+    #live {
+      background: var(--deep);
+      border-top: 1px solid var(--ash);
+    }
+
+    .venue-lead {
+      max-width: 720px;
+      font-size: 1.05rem;
+      color: var(--bone);
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+    .venue-lead strong { color: var(--white); font-weight: 600; }
+
+    .venue-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .venue-feature {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 1.5rem;
+      min-width: 0;
+    }
+    .venue-feature-icon {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9px;
+      background: rgba(228,140,34,0.12);
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .venue-feature h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .venue-feature p {
+      font-size: 0.92rem;
+      color: var(--fog);
+      line-height: 1.65;
+    }
+
+    .venue-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1rem 1.25rem;
+      padding: 1.75rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      margin-bottom: 2.5rem;
+    }
+    .venue-stat { text-align: center; min-width: 0; }
+    .venue-stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.3rem;
+      color: var(--white);
+      line-height: 1;
+    }
+    .venue-stat-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fog);
+      margin-top: 0.4rem;
+    }
+    .venue-stats-note {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--bone);
+      letter-spacing: 0.03em;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 1.1rem;
+      margin-top: 0.3rem;
+    }
+    .venue-stats-note strong { color: var(--gold); font-weight: 600; }
+
+    .venue-video { margin-bottom: 2.5rem; }
+    .venue-video-frame {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: #0d0d0d;
+    }
+    .venue-video-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .venue-video-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      text-align: center;
+      padding: 1rem;
+      background:
+        linear-gradient(rgba(10,10,10,0.5), rgba(10,10,10,0.78)),
+        url('images/about-jaden.jpg') center 22%/cover no-repeat;
+    }
+    .venue-video-play {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+    }
+    .venue-video-caption {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--bone);
+    }
+
+    .venue-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .venue-cta .btn-primary {
+      box-shadow: 0 3px 14px rgba(196,24,51,0.22), inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -1px 0 rgba(0,0,0,0.2);
+    }
+    .venue-cta-note {
+      font-size: 0.9rem;
+      color: var(--fog);
+      max-width: 460px;
+      line-height: 1.6;
+    }
 </style>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TGD59CRGD1"></script>
@@ -3670,7 +3926,7 @@
   <div class="announcement-bar" id="announcement-bar">
     <a href="#mailing-list" class="announcement-bar-link">
       <span class="announcement-bar-dot"></span>
-      Merch dropping soon — be the first to know
+      Merch dropping soon · be the first to know
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
     </a>
     <button class="announcement-bar-close" onclick="document.getElementById('announcement-bar').style.display='none';document.querySelector('nav').style.top='0'" aria-label="Dismiss">
@@ -3689,6 +3945,7 @@
       <li class="nav-links-group">
         <a href="#about" onclick="closeNav()">About</a>
         <a href="#music" onclick="closeNav()">Music</a>
+        <a href="#live" onclick="closeNav()">Live</a>
         <a href="#social" onclick="closeNav()">Social</a>
         <a href="#inner-circle" onclick="closeNav()">Inner Circle</a>
         <a href="#tour" onclick="closeNav()">Shows</a>
@@ -3722,9 +3979,20 @@
       <span class="offset">MONEY</span>
     </h1>
     <p class="hero-sub">Stream the latest. Catch her live. Book a show.</p>
+    <div class="hero-release">
+      <img class="hero-release-cover" src="images/album-water-from-the-earth.jpg" alt="Water From the Earth single cover art" />
+      <div class="hero-release-info">
+        <div class="hero-release-label">Latest Release</div>
+        <div class="hero-release-title">Water From the Earth</div>
+        <div class="hero-release-actions">
+          <a href="https://distrokid.com/hyperfollow/jadenmoney/water-from-the-earth" target="_blank" rel="noopener" class="stream-btn"><svg viewBox="0 0 18 18"><polygon points="4,2 15,9 4,16" fill="currentColor"/></svg> Listen</a>
+          <a href="https://www.youtube.com/watch?v=2DXQ7l6wZZA" target="_blank" rel="noopener" class="stream-btn youtube"><svg viewBox="0 0 24 24"><path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 19.104c-3.924 0-7.104-3.18-7.104-7.104S8.076 4.896 12 4.896s7.104 3.18 7.104 7.104-3.18 7.104-7.104 7.104zm0-13.332c-3.432 0-6.228 2.796-6.228 6.228S8.568 18.228 12 18.228s6.228-2.796 6.228-6.228S15.432 5.772 12 5.772zM9.684 15.54V8.46L16.2 12l-6.516 3.54z"/></svg> Watch Video</a>
+        </div>
+      </div>
+    </div>
     <div class="hero-cta">
-      <a href="#music" class="btn-primary">Listen Now</a>
-      <a href="#tour" class="btn-ghost">Upcoming Shows</a>
+      <a href="#tour" class="btn-primary">Upcoming Shows</a>
+      <a href="#contact" class="btn-ghost">Book a Show</a>
     </div>
     <div class="hero-scroll">Scroll</div>
     </div>
@@ -3735,7 +4003,7 @@
     <div class="section-inner">
     <div class="about-grid">
       <div class="about-img-wrap reveal">
-        <img src="images/about-jaden.jpg" alt="Jaden Money live on stage" style="width:100%;object-fit:cover;object-position:center top;display:block;" />
+        <img src="images/jaden-money-bio-photo.jpeg" alt="Jaden Money portrait holding a white mask" style="width:100%;object-fit:cover;object-position:center;display:block;" />
       </div>
       <div class="about-text reveal">
         <div class="section-label">About</div>
@@ -3743,9 +4011,6 @@
         <p>
           Jaden Money is an alt-rock artist blending grungy guitars with dark, emotionally raw lyricism. Originally from the Memphis area and now based in Wilmington, NC, her music explores themes of escapism, identity, and toxic attachment. By balancing vulnerability with a sharp-edged defiance, she creates a sound that is both restless and unfiltered.
         </p>
-        <blockquote class="about-quote">
-          "Haunting, heavy, and unapologetically honest."
-        </blockquote>
         <p>
           Influenced by '90s grunge and the powerful vocals of early-2000s alternative rock, Jaden's music carries the weight of the artists who came before while carving out something entirely her own. She pairs a massive vocal delivery with a heavy, grit-driven sonic landscape that mirrors the tension and release found in her lyrics.
         </p>
@@ -3791,6 +4056,32 @@
     </div>
 
     <div class="music-grid">
+      <div class="album-card reveal">
+        <div class="album-art" id="track-water-art" onclick="toggleSpotify('track-water', this)">
+          <div class="album-art-flipper">
+            <div class="album-art-front">
+              <div class="album-art-inner a1" style="background-image:url('images/album-water-from-the-earth.jpg');background-size:cover;background-position:center;"></div>
+              <div class="album-overlay">
+                <button class="play-btn" aria-label="Play"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="5,2 16,9 5,16" fill="rgba(255,255,255,0.95)"/></svg></button>
+            </div>
+            </div>
+            <div class="album-art-back">
+              <button class="album-art-close" id="track-water-close" aria-label="Close player">&#x2715;</button>
+              <iframe data-src="https://open.spotify.com/embed/track/6MxGLAGHkroUfjUTpVZ3B5?utm_source=generator&theme=0&autoplay=1" src="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+        <div class="album-info">
+          <div class="album-title">Water From the Earth</div>
+          <div class="album-meta">2026 · Single
+          <div class="stream-links">
+            <a href="https://open.spotify.com/track/6MxGLAGHkroUfjUTpVZ3B5" target="_blank" class="stream-btn spotify"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg> Spotify</a>
+            <a href="https://music.apple.com/us/album/water-from-the-earth-single/6781597992" target="_blank" class="stream-btn apple"><svg viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg> Apple</a>
+            <a href="https://music.youtube.com/watch?v=jkgQKsnCIkI" target="_blank" class="stream-btn youtube"><svg viewBox="0 0 24 24"><path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 19.104c-3.924 0-7.104-3.18-7.104-7.104S8.076 4.896 12 4.896s7.104 3.18 7.104 7.104-3.18 7.104-7.104 7.104zm0-13.332c-3.432 0-6.228 2.796-6.228 6.228S8.568 18.228 12 18.228s6.228-2.796 6.228-6.228S15.432 5.772 12 5.772zM9.684 15.54V8.46L16.2 12l-6.516 3.54z"/></svg> YouTube</a>
+          </div>
+        </div>
+        </div>
+      </div>
       <div class="album-card reveal">
         <div class="album-art" id="track-1-art" onclick="toggleSpotify('track-1', this)">
           <div class="album-art-flipper">
@@ -3899,14 +4190,66 @@
 
     <div class="featured-video reveal" style="margin-top: 3.5rem;">
       <div class="featured-video-label">
+        <span class="featured-video-title">Latest Music Video</span>
+      </div>
+      <div class="featured-video-embed">
+        <iframe src="https://www.youtube.com/embed/2DXQ7l6wZZA" title="Water from the Earth (Official Music Video)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="featured-video reveal" style="margin-top: 3.5rem;">
+      <div class="featured-video-label">
         <span class="featured-video-title">Featured Music Video</span>
       </div>
       <div class="featured-video-embed">
-        <iframe src="https://www.youtube.com/embed/z89jX6VKUgM?si=Kgmeq-CiKWULx-dJ" title="Jaden Money — Latest Music Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/z89jX6VKUgM?si=Kgmeq-CiKWULx-dJ" title="Jaden Money Music Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
     </div>
       </div>
   </section>
+
+  <!-- LIVE / FOR VENUES -->
+  <section id="live">
+    <div class="section-inner">
+      <div class="section-label reveal">For Venues</div>
+      <h2 class="section-title reveal">Book the Live Show</h2>
+      <p class="section-sub reveal">Jaden &amp; Kyle are a two-person live looping duo that sounds like a full band. Original alt-rock sets and a deep catalogue of covers for bars, beer gardens, festivals, and private events around Wilmington, NC.</p>
+
+      <p class="venue-lead reveal">Everything is built live, in the moment. <strong>Jaden</strong> layers vocals and harmonies on the fly while <strong>Kyle</strong> loops guitar, bass, and dynamic drums. No backing tracks, and no two nights the same.</p>
+
+      <div class="venue-features">
+        <div class="venue-feature reveal">
+          <div class="venue-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+          <h3>A Full-Band Sound</h3>
+          <p>Live looping builds guitar, bass, drums, and stacked vocal harmonies in real time.</p>
+        </div>
+        <div class="venue-feature reveal">
+          <div class="venue-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+          <h3>70+ Song Catalogue</h3>
+          <p>Covers spanning the &rsquo;60s through the 2010s, across rock, pop, soul, folk, and country.</p>
+        </div>
+        <div class="venue-feature reveal">
+          <div class="venue-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10-2h2v2h-2v-2zm4 0h2v2h-2v-2zm-4 4h2v2h-2v-2zm4 0h2v2h-2v-2zm-2 2h2v2h-2v-2z"/></svg></div>
+          <h3>Live Song Requests</h3>
+          <p>Guests scan a QR code to request songs by era or genre. It keeps the crowd engaged and in the room all night.</p>
+        </div>
+      </div>
+
+      <div class="venue-stats reveal">
+        <div class="venue-stat"><div class="venue-stat-num">21K</div><div class="venue-stat-label">TikTok</div></div>
+        <div class="venue-stat"><div class="venue-stat-num">7.9K</div><div class="venue-stat-label">Instagram</div></div>
+        <div class="venue-stat"><div class="venue-stat-num">5.8K</div><div class="venue-stat-label">Facebook</div></div>
+        <div class="venue-stat"><div class="venue-stat-num">1.6K</div><div class="venue-stat-label">YouTube</div></div>
+        <div class="venue-stats-note"><strong>36K+ combined followers.</strong> Every booking comes with promotion across our channels.</div>
+      </div>
+
+      <div class="venue-cta reveal">
+        <a href="#contact" class="btn-primary">Book a Show</a>
+        <span class="venue-cta-note">Available for original sets, acoustic cover performances, festivals &amp; private events.</span>
+      </div>
+    </div>
+  </section>
+
   <section id="social">
     <div class="section-inner">
       <div class="section-label reveal">Find Me Online</div>
@@ -4010,7 +4353,7 @@
           </div>
           <div class="superfan-callout-text" style="display:flex; flex-direction:column; gap:0.3rem; flex:1; min-width:0; text-align:left;">
             <span style="font-family:'Barlow Condensed',sans-serif; font-size:0.8rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--white);">How to Become a Superfan</span>
-            <span style="font-size:0.82rem; color:var(--fog); line-height:1.45; font-weight:300;">Superfan subscriptions become available during TikTok livestreams — join a live to access the Subscribe / Superfan option.</span>
+            <span style="font-size:0.82rem; color:var(--fog); line-height:1.45; font-weight:300;">Superfan subscriptions become available during TikTok livestreams. Join a live to access the Subscribe / Superfan option.</span>
           </div>
         </a>
       </div>
@@ -4302,7 +4645,7 @@
     });
 
     // Wire up close buttons
-    ['track-1','track-2','track-3','track-4'].forEach(trackId => {
+    ['track-water','track-1','track-2','track-3','track-4'].forEach(trackId => {
       const closeBtn = document.getElementById(trackId + '-close');
       if (closeBtn) {
         closeBtn.addEventListener('click', function(e) {
